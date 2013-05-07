@@ -14,6 +14,8 @@
     <script type="text/javascript" src="jquery-easyui/1.3.3/jquery.min.js"></script>
     <script type="text/javascript" src="jquery-easyui/1.3.3/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="jquery-easyui/1.3.3/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="ueditor/editor_config.js"></script>
+    <script type="text/javascript" src="ueditor/editor_all.js"></script>
     <script type="text/javascript">
         $.extend($.fn.window.defaults, {
             collapsible:false,
@@ -101,6 +103,25 @@
                     $.messager.alert('系统提示','请选中一些记录!');
                 }
             });
+
+            //编辑器
+            $('#btn-ueditor').click(function(){
+                $('#ueditor_win').window('open');
+            });
+            $('#btn_ueditor_win_cancel').click(function(){
+                $('#ueditor_win').window('close');
+            });
+            $('#btn_ueditor_win_ok').click(function(){
+                $('#ueditor_ff').submit();
+            });
+            $('#ueditor_ff').form();
+            var editor = new UE.ui.Editor({
+                initialFrameWidth:500,
+                initialFrameHeight:160,
+                minFrameHeight:160,
+                zIndex:9000
+            });
+            editor.render("editor");
         });
     </script>
 </head>
@@ -132,6 +153,7 @@
             <a class="easyui-linkbutton" id="btn-add"  plain="true">添加</a>
             <a class="easyui-linkbutton" id="btn-modify"  plain="true">修改</a>
             <a class="easyui-linkbutton" id="btn-delete" plain="true">删除</a>
+            <a class="easyui-linkbutton" id="btn-ueditor" plain="true">编辑器</a>
         </div>
     </div>
 </div>
@@ -170,6 +192,13 @@
             <a class="easyui-linkbutton" id="btn_modify_win_ok" data-options="iconCls:'icon-ok'" href="javascript:void(0)">确定</a>
             <a class="easyui-linkbutton" id="btn_modify_win_cancel" data-options="iconCls:'icon-cancel'" href="javascript:void(0)">取消</a>
         </div>
+    </form>
+</div>
+<div id="ueditor_win" class="easyui-window" data-options="closed:true" title="编辑器" style="width: 520px;height: 410px;">
+    <form action="test.do" method="post" id="ueditor_ff">
+        <script type="text/plain" id="editor" name="myContent" >
+        </script>
+        <button type="submit">Save changes</button>
     </form>
 </div>
 </body>
