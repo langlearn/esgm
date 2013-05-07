@@ -6,6 +6,7 @@ import com.dj.common.bean.Page;
 import com.dj.common.util.MyStrUtil;
 import com.dj.mapper.BaseinfoMapper;
 import com.dj.service.BaseinfoService;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -45,6 +46,9 @@ public class BaseinfoServiceImpl implements BaseinfoService {
         Page<Baseinfo> page=new Page<Baseinfo>(start,limit);
         BaseinfoExample example=new BaseinfoExample();
         BaseinfoExample.Criteria criteria=example.createCriteria();
+        if(StringUtils.isNotBlank(model.getCcode())){
+            criteria.andCcodeLike("%"+model.getCcode()+"%");
+        }
         int count=baseinfoMapper.countByExample(example);
         List<Baseinfo> baseinfos=baseinfoMapper.selectByExample(example,page.createRowBounds());
         page.setTotal(count);
