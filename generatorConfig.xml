@@ -31,16 +31,16 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.dj.bean" targetProject="src\main\resources">
+        <javaModelGenerator targetPackage="com.bdt.bean" targetProject="src\main\resources">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="com.dj.mapper" targetProject="src\main\resources">
+        <sqlMapGenerator targetPackage="com.bdt.mapper" targetProject="src\main\resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.dj.mapper" targetProject="src\main\resources">
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.bdt.mapper" targetProject="src\main\resources">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 

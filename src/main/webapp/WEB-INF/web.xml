@@ -11,10 +11,10 @@
     <display-name>PDERP</display-name>
 
     <listener>
-        <listener-class>com.dj.common.guice.MyServletContextListener</listener-class>
+        <listener-class>com.bdt.common.guice.MyServletContextListener</listener-class>
     </listener>
     <!--<listener>
-        <listener-class>com.dj.common.servlet.ContextListener</listener-class>
+        <listener-class>com.bdtt.common.servlet.ContextListener</listener-class>
     </listener>-->
 
     <filter>

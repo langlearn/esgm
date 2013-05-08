@@ -6,7 +6,7 @@
         <property name="dialect" value="mysql"/>
     </properties>
     <plugins>
-        <plugin interceptor="com.dj.common.mybatis.plugin.PaginationInterceptor">
+        <plugin interceptor="com.bdt.common.mybatis.plugin.PaginationInterceptor">
         </plugin>
     </plugins>
     <environments default="db1">
@@ -21,6 +21,6 @@
         </environment>
     </environments>
 	<mappers>
-        <package name="com.dj.mapper"/>
+        <package name="com.bdt.mapper"/>
 	</mappers>
 </configuration>
