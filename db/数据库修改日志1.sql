@@ -115,3 +115,52 @@ GO
 
 ALTER TABLE [dbo].[JEHR_data_dictionary] ADD  CONSTRAINT [DF_JEHR_data_dictionary_is_use]  DEFAULT ((1)) FOR [is_use]
 GO
+
+/* ******************************************************************************************************************* */
+
+-- 2013-05-09
+-- 工单表 JEHR_work_order
+alter table JEHR_work_order add project_id int;
+alter table JEHR_work_order drop column declarant_id;
+alter table JEHR_work_order drop column declaratory_time;
+alter table JEHR_work_order drop column auditor_user_id;
+alter table JEHR_work_order drop column people_for_copy_id;
+alter table JEHR_work_order drop column people_for_copy_name;
+alter table JEHR_work_order drop column examine_time;
+alter table JEHR_work_order drop column examine_status;
+alter table JEHR_work_order drop column examine_opinion;
+alter table JEHR_work_order add report_user_id int;
+alter table JEHR_work_order add report_time datetime;
+alter table JEHR_work_order add sponsor_user_id int;
+alter table JEHR_work_order add accept_user_id int;
+alter table JEHR_work_order add confirm_status tinyint;
+alter table JEHR_work_order add confirm_time datetime;
+alter table JEHR_work_order add accept_status tinyint;
+alter table JEHR_work_order add accept_time datetime;
+alter table JEHR_work_order add check_receive_status tinyint;
+alter table JEHR_work_order add check_receive_time datetime;
+alter table JEHR_work_order add invalid_reason varchar;
+
+/* ******************************************************************************************************************* */
+
+-- 2013-05-09
+-- 工单抄送表 JEHR_work_order_copy
+
+create table JEHR_work_order_copy(
+woc_id int primary key identity,
+work_order_id int,
+copy_time datetime,
+copy_user_id int,
+is_sign_for tinyint,
+sign_for_time datetime	
+);
+
+/* ******************************************************************************************************************* */
+
+-- 2013-05-09
+-- 工作日志表 JEHR_work_diary
+
+alter table JEHR_work_diary add report_time datetime;
+alter table JEHR_work_diary add work_order_id int;
+alter table JEHR_work_diary add work_type_code varchar(20);
+alter table JEHR_work_diary add work_hour decimal(10, 1);
