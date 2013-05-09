@@ -21,10 +21,10 @@
             password="123456">
         </jdbcConnection>
         -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.1.213:3306/test"
-                        userId="root"
-                        password="123456">
+        <jdbcConnection driverClass="jdbc:jtds:sqlserver://localhost:1433;DatabaseName=BDTOA"
+                        connectionURL="jdbc:jtds:sqlserver://localhost:1433;DatabaseName=BDTOA"
+                        userId="sa"
+                        password="">
         </jdbcConnection>
 
         <javaTypeResolver>
