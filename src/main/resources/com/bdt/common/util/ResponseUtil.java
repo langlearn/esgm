@@ -42,13 +42,13 @@ public class ResponseUtil {
         writeJson(response, result);
     }
 
-    public void writeFaile(ServletResponse response) {
+    public void writeFail(ServletResponse response) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put(SUCCESS, false);
         writeJson(response, result);
     }
 
-    public void writeFaileAndMsg(ServletResponse response,String msg) {
+    public void writeFailAndMsg(ServletResponse response,String msg) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put(SUCCESS, false);
         result.put(MSG,msg);
@@ -60,7 +60,7 @@ public class ResponseUtil {
         writeJson(response,result);
     }
 
-    public void writeFaileAndError(ServletResponse response,String error) {
+    public void writeFailAndError(ServletResponse response,String error) {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put(SUCCESS, false);
         result.put(ERROR,error);

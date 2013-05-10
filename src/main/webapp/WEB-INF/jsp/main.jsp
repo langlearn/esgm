@@ -9,13 +9,13 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="jquery-easyui/1.3.3/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="jquery-easyui/1.3.3/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="ztree/css/zTreeStyle.css">
-    <script type="text/javascript" src="jquery-easyui/1.3.3/jquery.min.js"></script>
-    <script type="text/javascript" src="jquery-easyui/1.3.3/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="jquery-easyui/1.3.3/easyui-lang-zh_CN.js"></script>
-    <script type="text/javascript" src="ztree/js/jquery.ztree.core-3.5.min.js"></script>
+    <%--<link rel="stylesheet" type="text/css" href="jquery-easyui/1.3.3/themes/default/easyui.css">--%>
+    <%--<link rel="stylesheet" type="text/css" href="jquery-easyui/1.3.3/themes/icon.css">--%>
+    <%--<link rel="stylesheet" type="text/css" href="ztree/css/zTreeStyle.css">--%>
+    <%--<script type="text/javascript" src="jquery-easyui/1.3.3/jquery.min.js"></script>--%>
+    <%--<script type="text/javascript" src="jquery-easyui/1.3.3/jquery.easyui.min.js"></script>--%>
+    <%--<script type="text/javascript" src="jquery-easyui/1.3.3/easyui-lang-zh_CN.js"></script>--%>
+    <%--<script type="text/javascript" src="ztree/js/jquery.ztree.core-3.5.min.js"></script>--%>
     <script type="text/javascript">
         $(function(){
             var setting = {
