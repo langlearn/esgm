@@ -3,7 +3,7 @@
 
 -- 2013-05-09
 
--- ´´½¨±í JEHR_user 
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ JEHR_user 
 
 USE [BDTOA]
 GO
@@ -42,26 +42,26 @@ GO
 ALTER TABLE [dbo].[JEHR_user] ADD  CONSTRAINT [DF_Table_1_is_ public_work_diary]  DEFAULT ((1)) FOR [is_ public_work_diary]
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ô±¹¤ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'user_id'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ô±ï¿½ï¿½ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'user_id'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ÊÇ·ñ¾ß±¸¹¤µ¥Ìî±¨È¨ÏÞ£¬ÊÇ1£¬·ñ0£¬Ä¬ÈÏ0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_report'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ï¿½Ç·ï¿½ß±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î±¨È¨ï¿½Þ£ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Ä¬ï¿½ï¿½0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_report'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ÊÇ·ñ¾ß±¸¹¤µ¥·¢ÆðÈ¨ÏÞ£¬ÊÇ1£¬·ñ0£¬Ä¬ÈÏ0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_sponsor'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ï¿½Ç·ï¿½ß±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Ä¬ï¿½ï¿½0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_sponsor'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ÊÇ·ñ¾ß±¸¹¤µ¥ÊÜÀíÈ¨ÏÞ£¬ÊÇ1£¬·ñ0£¬Ä¬ÈÏ0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_accept'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ï¿½Ç·ï¿½ß±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Ä¬ï¿½ï¿½0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_accept'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ÊÇ·ñ¹«¿ª¸öÈË¹¤×÷ÈÕÖ¾£¬ÊÇ1£¬·ñ0£¬Ä¬ÈÏ1' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_ public_work_diary'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'ï¿½Ç·ñ¹«¿ï¿½ï¿½ï¿½ï¿½Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½0ï¿½ï¿½Ä¬ï¿½ï¿½1' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_ public_work_diary'
 GO
 
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
 
--- ±íJEHR_project Ìí¼ÓÒ»¸ö×Ö¶Î business_type_code varchar(20)
+-- ï¿½ï¿½JEHR_project ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö¶ï¿½ business_type_code varchar(20)
 
 BEGIN TRANSACTION
 SET QUOTED_IDENTIFIER ON
@@ -84,7 +84,7 @@ COMMIT
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- ´´½¨Êý¾Ý×Öµä±í JEHR_data_dictionary
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ JEHR_data_dictionary
 
 USE [BDTOA]
 GO
@@ -100,7 +100,7 @@ SET ANSI_PADDING ON
 GO
 
 CREATE TABLE [dbo].[JEHR_data_dictionary](
-	[d_id] [int] NULL,
+	[dd_id] [int] primary key identity,
 	[dictionary_name] [varchar](50) NULL,
 	[dictionary_code] [varchar](20) NULL,
 	[parent_code] [varchar](20) NULL,
@@ -119,7 +119,7 @@ GO
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- ¹¤µ¥±í JEHR_work_order
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ JEHR_work_order
 alter table JEHR_work_order add project_id int;
 alter table JEHR_work_order drop column declarant_id;
 alter table JEHR_work_order drop column declaratory_time;
@@ -144,7 +144,7 @@ alter table JEHR_work_order add invalid_reason varchar;
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- ¹¤µ¥³­ËÍ±í JEHR_work_order_copy
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í±ï¿½ JEHR_work_order_copy
 
 create table JEHR_work_order_copy(
 woc_id int primary key identity,
@@ -158,7 +158,7 @@ sign_for_time datetime
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- ¹¤×÷ÈÕÖ¾±í JEHR_work_diary
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ JEHR_work_diary
 
 alter table JEHR_work_diary add report_time datetime;
 alter table JEHR_work_diary add work_order_id int;

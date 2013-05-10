@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 
 public interface WorkDiaryMapper {
@@ -60,6 +61,7 @@ public interface WorkDiaryMapper {
         @Result(column="work_hour", property="workHour", jdbcType=JdbcType.DECIMAL)
     })
     List<WorkDiary> selectByExample(WorkDiaryExample example);
+    List<WorkDiary> selectByExample(WorkDiaryExample example,RowBounds rowBounds);
 
     @Select({
         "select",

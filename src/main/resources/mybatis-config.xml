@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <properties resource="jdbc.properties">
-        <property name="dialect" value="mysql"/>
+        <property name="dialect" value="SQLSERVER2005"/>
     </properties>
     <plugins>
         <plugin interceptor="com.bdt.common.mybatis.plugin.PaginationInterceptor">

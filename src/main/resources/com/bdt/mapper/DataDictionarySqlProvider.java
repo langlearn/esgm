@@ -13,60 +13,70 @@ import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
 import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
 import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
 
-import com.bdt.bean.Baseinfo;
-import com.bdt.bean.BaseinfoExample.Criteria;
-import com.bdt.bean.BaseinfoExample.Criterion;
-import com.bdt.bean.BaseinfoExample;
+import com.bdt.bean.DataDictionary;
+import com.bdt.bean.DataDictionaryExample.Criteria;
+import com.bdt.bean.DataDictionaryExample.Criterion;
+import com.bdt.bean.DataDictionaryExample;
 import java.util.List;
 import java.util.Map;
 
-public class BaseinfoSqlProvider {
+public class DataDictionarySqlProvider {
 
-    public String countByExample(BaseinfoExample example) {
+    public String countByExample(DataDictionaryExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("t_baseinfo");
+        FROM("JEHR_data_dictionary");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(BaseinfoExample example) {
+    public String deleteByExample(DataDictionaryExample example) {
         BEGIN();
-        DELETE_FROM("t_baseinfo");
+        DELETE_FROM("JEHR_data_dictionary");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String insertSelective(Baseinfo record) {
+    public String insertSelective(DataDictionary record) {
         BEGIN();
-        INSERT_INTO("t_baseinfo");
+        INSERT_INTO("JEHR_data_dictionary");
         
-        if (record.getCcode() != null) {
-            VALUES("ccode", "#{ccode,jdbcType=VARCHAR}");
+        if (record.getDictionaryName() != null) {
+            VALUES("dictionary_name", "#{dictionaryName,jdbcType=VARCHAR}");
         }
         
-        if (record.getCname() != null) {
-            VALUES("cname", "#{cname,jdbcType=VARCHAR}");
+        if (record.getDictionaryCode() != null) {
+            VALUES("dictionary_code", "#{dictionaryCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getCsort() != null) {
-            VALUES("csort", "#{csort,jdbcType=VARCHAR}");
+        if (record.getParentCode() != null) {
+            VALUES("parent_code", "#{parentCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getIsUse() != null) {
+            VALUES("is_use", "#{isUse,jdbcType=TINYINT}");
+        }
+        
+        if (record.getDescriptions() != null) {
+            VALUES("descriptions", "#{descriptions,jdbcType=VARCHAR}");
         }
         
         return SQL();
     }
 
-    public String selectByExample(BaseinfoExample example) {
+    public String selectByExample(DataDictionaryExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("rid");
+            SELECT_DISTINCT("dd_id");
         } else {
-            SELECT("rid");
+            SELECT("dd_id");
         }
-        SELECT("ccode");
-        SELECT("cname");
-        SELECT("csort");
-        FROM("t_baseinfo");
+        SELECT("dictionary_name");
+        SELECT("dictionary_code");
+        SELECT("parent_code");
+        SELECT("is_use");
+        SELECT("descriptions");
+        FROM("JEHR_data_dictionary");
         applyWhere(example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -77,26 +87,34 @@ public class BaseinfoSqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        Baseinfo record = (Baseinfo) parameter.get("record");
-        BaseinfoExample example = (BaseinfoExample) parameter.get("example");
+        DataDictionary record = (DataDictionary) parameter.get("record");
+        DataDictionaryExample example = (DataDictionaryExample) parameter.get("example");
         
         BEGIN();
-        UPDATE("t_baseinfo");
+        UPDATE("JEHR_data_dictionary");
         
-        if (record.getRid() != null) {
-            SET("rid = #{record.rid,jdbcType=INTEGER}");
+        if (record.getDdId() != null) {
+            SET("dd_id = #{record.ddId,jdbcType=INTEGER}");
         }
         
-        if (record.getCcode() != null) {
-            SET("ccode = #{record.ccode,jdbcType=VARCHAR}");
+        if (record.getDictionaryName() != null) {
+            SET("dictionary_name = #{record.dictionaryName,jdbcType=VARCHAR}");
         }
         
-        if (record.getCname() != null) {
-            SET("cname = #{record.cname,jdbcType=VARCHAR}");
+        if (record.getDictionaryCode() != null) {
+            SET("dictionary_code = #{record.dictionaryCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getCsort() != null) {
-            SET("csort = #{record.csort,jdbcType=VARCHAR}");
+        if (record.getParentCode() != null) {
+            SET("parent_code = #{record.parentCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getIsUse() != null) {
+            SET("is_use = #{record.isUse,jdbcType=TINYINT}");
+        }
+        
+        if (record.getDescriptions() != null) {
+            SET("descriptions = #{record.descriptions,jdbcType=VARCHAR}");
         }
         
         applyWhere(example, true);
@@ -105,40 +123,50 @@ public class BaseinfoSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
-        UPDATE("t_baseinfo");
+        UPDATE("JEHR_data_dictionary");
         
-        SET("rid = #{record.rid,jdbcType=INTEGER}");
-        SET("ccode = #{record.ccode,jdbcType=VARCHAR}");
-        SET("cname = #{record.cname,jdbcType=VARCHAR}");
-        SET("csort = #{record.csort,jdbcType=VARCHAR}");
+        SET("dd_id = #{record.ddId,jdbcType=INTEGER}");
+        SET("dictionary_name = #{record.dictionaryName,jdbcType=VARCHAR}");
+        SET("dictionary_code = #{record.dictionaryCode,jdbcType=VARCHAR}");
+        SET("parent_code = #{record.parentCode,jdbcType=VARCHAR}");
+        SET("is_use = #{record.isUse,jdbcType=TINYINT}");
+        SET("descriptions = #{record.descriptions,jdbcType=VARCHAR}");
         
-        BaseinfoExample example = (BaseinfoExample) parameter.get("example");
+        DataDictionaryExample example = (DataDictionaryExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
     }
 
-    public String updateByPrimaryKeySelective(Baseinfo record) {
+    public String updateByPrimaryKeySelective(DataDictionary record) {
         BEGIN();
-        UPDATE("t_baseinfo");
+        UPDATE("JEHR_data_dictionary");
         
-        if (record.getCcode() != null) {
-            SET("ccode = #{ccode,jdbcType=VARCHAR}");
+        if (record.getDictionaryName() != null) {
+            SET("dictionary_name = #{dictionaryName,jdbcType=VARCHAR}");
         }
         
-        if (record.getCname() != null) {
-            SET("cname = #{cname,jdbcType=VARCHAR}");
+        if (record.getDictionaryCode() != null) {
+            SET("dictionary_code = #{dictionaryCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getCsort() != null) {
-            SET("csort = #{csort,jdbcType=VARCHAR}");
+        if (record.getParentCode() != null) {
+            SET("parent_code = #{parentCode,jdbcType=VARCHAR}");
         }
         
-        WHERE("rid = #{rid,jdbcType=INTEGER}");
+        if (record.getIsUse() != null) {
+            SET("is_use = #{isUse,jdbcType=TINYINT}");
+        }
+        
+        if (record.getDescriptions() != null) {
+            SET("descriptions = #{descriptions,jdbcType=VARCHAR}");
+        }
+        
+        WHERE("dd_id = #{ddId,jdbcType=INTEGER}");
         
         return SQL();
     }
 
-    protected void applyWhere(BaseinfoExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(DataDictionaryExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

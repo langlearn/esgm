@@ -1,4 +1,4 @@
-package com.bdt.service.impl;
+package com.bdt.service;
 
 /**
  * Service层公用的Exception.
