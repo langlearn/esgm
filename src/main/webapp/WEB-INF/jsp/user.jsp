@@ -34,7 +34,7 @@
             $('#btn-query').click(function(){
                 var name=$('#q-name').val();
                 $('#grid').datagrid('load',{
-                    dictionaryName:name
+                    username:name
                 });
             });
 
@@ -89,8 +89,8 @@
                     $.messager.confirm('删除','你确定要删除这些记录吗?',function(r){
                         if (r){
 
-                            var rids=getRids(res,'ddId');
-                            $.getJSON('datadictionary!delete.do',{rids:rids},function(){
+                            var rids=getRids(res,'urId');
+                            $.getJSON('user!delete.do',{rids:rids},function(){
                                 $.messager.alert('系统提示','删除成功','',function(){
                                     $('#grid').datagrid('reload');
                                 });
@@ -112,19 +112,19 @@
 <div data-options="region:'center'" style="padding:5px;background:#eee;">
     <table class="easyui-datagrid" id="grid"
            data-options="
-           fit:true,url:'datadictionary!query.do',
+           fit:true,url:'user!query.do',
            fitColumns:true,
            pagination:true,
            toolbar:'#tb',
-           title:'数据字典'">
+           title:'用户列表'">
         <thead>
         <tr>
-            <th data-options="field:'dId',checkbox:true"></th>
-            <th data-options="field:'dictionaryName',width:100">名称</th>
-            <th data-options="field:'dictionaryCode',width:100">代码</th>
-            <th data-options="field:'parentCode',width:100">父类代码</th>
-            <th data-options="field:'isUse',width:100,formatter:formatUse">是否启用</th>
-            <th data-options="field:'descriptions',width:100">描述</th>
+            <th data-options="field:'userId',checkbox:true"></th>
+            <th data-options="field:'username',width:100">用户姓名</th>
+            <th data-options="field:'isAbleWorkOrderReport',width:100,formatter:formatUse">是否具备工单填报权限</th>
+            <th data-options="field:'isAbleWorkOrderSponsor',width:100,formatter:formatUse">是否具备工单发起权限</th>
+            <th data-options="field:'isAbleWorkOrderAccept',width:100,formatter:formatUse">是否具备工单受理权限</th>
+            <th data-options="field:'isPublicWorkDiary',width:100,formatter:formatUse">是否公开个人工作日志</th>
         </tr>
         </thead>
     </table>
@@ -143,34 +143,27 @@
     </div>
 </div>
 <div id="add-win" class="easyui-window" data-options="closed:true" title="添加" style="padding:5px;">
-    <form id="add-form" action="datadictionary!add.do" method="post">
+    <form id="add-form" action="user!add.do" method="post">
         <table>
             <tr>
-                <td>代码:</td>
-                <td><input name="dictionaryCode" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>是否具备工单填报权限:</td>
+                <td>是<input type="radio" name="isAbleWorkOrderReport" value="1"/></td>
+                <td>否<input type="radio" name="isAbleWorkOrderReport" value="0" checked="true"/></td>
             </tr>
             <tr>
-                <td>父类代码:</td>
-                <td><input name="parentCode" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>是否具备工单发起权限:</td>
+                <td>是<input type="radio" name="isAbleWorkOrderSponsor" value="1"/></td>
+                <td>否<input type="radio" name="isAbleWorkOrderSponsor" value="0" checked="true"/></td>
             </tr>
             <tr>
-                <td>名称:</td>
-                <td><input name="dictionaryName" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>是否具备工单受理权限:</td>
+                <td>是<input type="radio" name="isAbleWorkOrderAccept" value="1"/></td>
+                <td>否<input type="radio" name="isAbleWorkOrderAccept" value="0" checked="true"/></td>
             </tr>
             <tr>
-                <td>是否启用:</td>
-                <td>
-                    <select name="isUse" class="easyui-combobox" style="width:200px;">
-                        <option value="0" >否</option>
-                        <option value="1" selected="selected">是</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>描述:</td>
-                <td>
-                    <textarea name="descriptions" style="overflow:auto;"></textarea>
-                </td>
+                <td>是否公开个人工作日志:</td>
+                <td>是<input type="radio" name="isPublicWorkDiary" value="1"/></td>
+                <td>否<input type="radio" name="isPublicWorkDiary" value="0" checked="true"/></td>
             </tr>
         </table>
         <div data-options="border:false" style="text-align:right;">
@@ -180,35 +173,29 @@
     </form>
 </div>
 <div id="modify-win" class="easyui-window" data-options="closed:true" title="修改" style="padding:5px;">
-    <form id="modify-form" action="datadictionary!modify.do" method="post">
-        <input type="hidden" name="ddId"/>
+    <form id="modify-form" action="user!modify.do" method="post">
+        <input type="hidden" name="urId"/>
+        <input type="hidden" name="userId"/>
         <table>
             <tr>
-                <td>代码:</td>
-                <td><input name="dictionaryCode" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>是否具备工单填报权限:</td>
+                <td>是<input type="radio" name="isAbleWorkOrderReport" value="1"/></td>
+                <td>否<input type="radio" name="isAbleWorkOrderReport" value="0" checked="true"/></td>
             </tr>
             <tr>
-                <td>父类代码:</td>
-                <td><input name="parentCode" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>是否具备工单发起权限:</td>
+                <td>是<input type="radio" name="isAbleWorkOrderSponsor" value="1"/></td>
+                <td>否<input type="radio" name="isAbleWorkOrderSponsor" value="0" checked="true"/></td>
             </tr>
             <tr>
-                <td>名称:</td>
-                <td><input name="dictionaryName" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>是否具备工单受理权限:</td>
+                <td>是<input type="radio" name="isAbleWorkOrderAccept" value="1"/></td>
+                <td>否<input type="radio" name="isAbleWorkOrderAccept" value="0" checked="true"/></td>
             </tr>
             <tr>
-                <td>是否启用:</td>
-                <td>
-                    <select name="isUse" class="easyui-combobox" style="width:200px;">
-                        <option value="0" >否</option>
-                        <option value="1" selected="selected">是</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>描述:</td>
-                <td>
-                    <textarea name="descriptions" style="overflow:auto;"></textarea>
-                </td>
+                <td>是否公开个人工作日志:</td>
+                <td>是<input type="radio" name="isPublicWorkDiary" value="1"/></td>
+                <td>否<input type="radio" name="isPublicWorkDiary" value="0" checked="true"/></td>
             </tr>
         </table>
         <div data-options="border:false" style="text-align:right;">

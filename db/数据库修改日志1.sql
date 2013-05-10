@@ -3,7 +3,7 @@
 
 -- 2013-05-09
 
--- ������ JEHR_user 
+-- JEHR_user
 
 USE [BDTOA]
 GO
@@ -16,17 +16,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[JEHR_user](
-	[u_id] [int] NOT NULL,
+	[ur_id] [int] primary key identity,
 	[user_id] [int] NULL,
 	[is_able_work_order_report] [tinyint] NULL,
 	[is_able_work_order_sponsor] [tinyint] NULL,
 	[is_able_work_order_accept] [tinyint] NULL,
-	[is_ public_work_diary] [tinyint] NULL,
- CONSTRAINT [PK_JEHR_user] PRIMARY KEY CLUSTERED 
-(
-	[u_id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+	[is_public_work_diary] [tinyint] NULL
+)
 
 GO
 
@@ -42,26 +38,12 @@ GO
 ALTER TABLE [dbo].[JEHR_user] ADD  CONSTRAINT [DF_Table_1_is_ public_work_diary]  DEFAULT ((1)) FOR [is_ public_work_diary]
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ա��ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'user_id'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'�Ƿ�߱������Ȩ�ޣ���1����0��Ĭ��0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_report'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'�Ƿ�߱���������Ȩ�ޣ���1����0��Ĭ��0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_sponsor'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'�Ƿ�߱���������Ȩ�ޣ���1����0��Ĭ��0' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_able_work_order_accept'
-GO
-
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'�Ƿ񹫿����˹�����־����1����0��Ĭ��1' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'JEHR_user', @level2type=N'COLUMN',@level2name=N'is_ public_work_diary'
-GO
 
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
 
--- ��JEHR_project ���һ���ֶ� business_type_code varchar(20)
+-- JEHR_project business_type_code varchar(20)
 
 BEGIN TRANSACTION
 SET QUOTED_IDENTIFIER ON
@@ -84,7 +66,7 @@ COMMIT
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- ��������ֵ�� JEHR_data_dictionary
+-- JEHR_data_dictionary
 
 USE [BDTOA]
 GO
@@ -106,7 +88,7 @@ CREATE TABLE [dbo].[JEHR_data_dictionary](
 	[parent_code] [varchar](20) NULL,
 	[is_use] [tinyint] NULL,
 	[descriptions] [varchar](500) NULL
-) ON [PRIMARY]
+)
 
 GO
 
@@ -119,7 +101,7 @@ GO
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- ������ JEHR_work_order
+-- JEHR_work_order
 alter table JEHR_work_order add project_id int;
 alter table JEHR_work_order drop column declarant_id;
 alter table JEHR_work_order drop column declaratory_time;
@@ -144,7 +126,7 @@ alter table JEHR_work_order add invalid_reason varchar;
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- �������ͱ� JEHR_work_order_copy
+-- JEHR_work_order_copy
 
 create table JEHR_work_order_copy(
 woc_id int primary key identity,
@@ -158,9 +140,16 @@ sign_for_time datetime
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- ������־�� JEHR_work_diary
+-- JEHR_work_diary
 
 alter table JEHR_work_diary add report_time datetime;
 alter table JEHR_work_diary add work_order_id int;
 alter table JEHR_work_diary add work_type_code varchar(20);
 alter table JEHR_work_diary add work_hour decimal(10, 1);
+
+/* ******************************************************************************************************************* */
+
+-- 2013-05-09
+-- view_JEHR_user
+create view view_JEHR_user as select t1.ID user_id, t1.UserName, t1.UserPwd, t1.TrueName, t1.Department, t1.ZhiWei, t1.ZaiGang, t1.EmailStr, t1.Sex,t2.ur_id, t2.is_able_work_order_report, t2.is_able_work_order_sponsor, t2.is_able_work_order_accept, t2.is_public_work_diary from view_JEHR_ERPUser t1
+left join JEHR_user t2 on t1.id=t2.user_id
