@@ -5,6 +5,7 @@ import com.bdt.bean.WorkDiaryExample;
 import com.bdt.common.bean.Page;
 import com.bdt.common.util.MyStrUtil;
 import com.bdt.mapper.WorkDiaryMapper;
+import com.bdt.service.WorkDiaryService;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -14,21 +15,23 @@ import java.util.List;
  *
  * @author lim
  */
-public class WorkDiaryServiceImpl {
+public class WorkDiaryServiceImpl implements WorkDiaryService {
     @Inject
     private WorkDiaryMapper workDiaryMapper;
 
-    
+    @Override
     public void add(WorkDiary model){
         workDiaryMapper.insert(model);
     }
 
     
+    @Override
     public void modify(WorkDiary model){
         workDiaryMapper.updateByPrimaryKeySelective(model);
     }
 
     
+    @Override
     public void delete(String rids){
         List<Integer> ids= MyStrUtil.stringToListInteger(rids);
         WorkDiaryExample example=new WorkDiaryExample();
@@ -38,6 +41,7 @@ public class WorkDiaryServiceImpl {
     }
 
     
+    @Override
     public Page<WorkDiary> queryByPage(WorkDiary model, Integer start, Integer limit){
         Page<WorkDiary> page=new Page<WorkDiary>(start,limit);
         WorkDiaryExample example=new WorkDiaryExample();
