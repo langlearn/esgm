@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author lim
  */
-public class WorkDiaryService {
+public class WorkDiaryServiceImpl {
     @Inject
     private WorkDiaryMapper workDiaryMapper;
 
