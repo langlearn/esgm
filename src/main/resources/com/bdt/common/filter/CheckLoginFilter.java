@@ -25,7 +25,7 @@ public class CheckLoginFilter implements Filter {
 
 		HttpSession session = request.getSession(false);
 
-		if (!"/login.do".equals(targetUrl)) {
+		if (!"/login!verify.do".equals(targetUrl)) {
 			System.out.println(targetUrl);
 			if (session == null || session.getAttribute("optid") == null) {
 				
@@ -33,8 +33,6 @@ public class CheckLoginFilter implements Filter {
 				if (ajaxSubmit != null && ajaxSubmit.equals("XMLHttpRequest")) {
 					response.getWriter().print("{\"success\":false,\"errorType\":\"session\"}");
 				} else {
-					System.out.println("request.getContextPath()="
-							+ request.getContextPath());
 					response.sendRedirect(request.getContextPath()
 							+ "/index.jsp");
 				}

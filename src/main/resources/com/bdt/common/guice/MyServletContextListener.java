@@ -30,7 +30,7 @@ public class MyServletContextListener extends GuiceServletContextListener {
                     // Struts 2 setup
                     bind(StrutsPrepareAndExecuteFilter.class).in(Singleton.class);
                     bind(CheckLoginFilter.class).in(Singleton.class);
-                    //filter("*.do").through(CheckLoginFilter.class);
+                    filter("*.do").through(CheckLoginFilter.class);
                     filter("/*").through(StrutsPrepareAndExecuteFilter.class);
                 }
             }
