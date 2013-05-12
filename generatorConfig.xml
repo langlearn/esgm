@@ -24,7 +24,7 @@
         <jdbcConnection driverClass="net.sourceforge.jtds.jdbc.Driver"
                         connectionURL="jdbc:jtds:sqlserver://localhost:1433;DatabaseName=BDTOA"
                         userId="sa"
-                        password="">
+                        password="123456">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -44,15 +44,15 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table tableName="t_baseinfo" domainObjectName="Baseinfo">
-            <generatedKey column="rid" sqlStatement="MySql" identity="true"/>
-        </table>
-        <!--<table tableName="v_locate_Track" domainObjectName="ViewLocateTrack"
+        <!--<table tableName="JEHR_project" domainObjectName="Project">
+            <generatedKey column="p_id" sqlStatement="SqlServer" identity="true"/>
+        </table>-->
+        <table tableName="view_JEHR_ERPUser" domainObjectName="SysUser"
                enableDeleteByExample="false"
                enableDeleteByPrimaryKey="false"
                enableInsert="false"
                enableUpdateByExample="false"
                enableUpdateByPrimaryKey="false">
-        </table>-->
+        </table>
     </context>
 </generatorConfiguration>
