@@ -153,3 +153,19 @@ alter table JEHR_work_diary add work_hour decimal(10, 1);
 -- view_JEHR_user
 create view view_JEHR_user as select t1.ID user_id, t1.UserName, t1.UserPwd, t1.TrueName, t1.Department, t1.ZhiWei, t1.ZaiGang, t1.EmailStr, t1.Sex,t2.ur_id, t2.is_able_work_order_report, t2.is_able_work_order_sponsor, t2.is_able_work_order_accept, t2.is_public_work_diary from view_JEHR_ERPUser t1
 left join JEHR_user t2 on t1.id=t2.user_id
+
+/* ******************************************************************************************************************* */
+
+-- 2013-05-09
+-- view_JEHR_work_order
+
+CREATE VIEW [dbo].[view_JEHR_work_order]
+AS
+SELECT dbo.JEHR_work_order.*,dbo.view_JEHR_ERPUser.TrueName AS report_user, view_JEHR_ERPUser_1.TrueName AS sponsor_user, 
+                 view_JEHR_ERPUser_2.TrueName AS accept_user,dbo.JEHR_project.project_name
+FROM      dbo.JEHR_work_order 
+left JOIN dbo.view_JEHR_ERPUser ON dbo.JEHR_work_order.report_user_id = dbo.view_JEHR_ERPUser.ID 
+left JOIN dbo.view_JEHR_ERPUser AS view_JEHR_ERPUser_1 ON dbo.JEHR_work_order.sponsor_user_id = view_JEHR_ERPUser_1.ID 
+left JOIN dbo.view_JEHR_ERPUser AS view_JEHR_ERPUser_2 ON 
+                dbo.JEHR_work_order.accept_user_id = view_JEHR_ERPUser_2.ID
+left join dbo.JEHR_project on dbo.JEHR_work_order.project_id=dbo.JEHR_project.p_id

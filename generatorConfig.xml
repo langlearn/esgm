@@ -44,10 +44,13 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <!--<table tableName="JEHR_project" domainObjectName="Project">
-            <generatedKey column="p_id" sqlStatement="SqlServer" identity="true"/>
+        <!--<table tableName="JEHR_work_order" domainObjectName="WorkOrder">
+            <generatedKey column="wo_id" sqlStatement="SqlServer" identity="true"/>
+        </table>
+        <table tableName="JEHR_work_order_copy" domainObjectName="WorkOrderCopy">
+            <generatedKey column="woc_id" sqlStatement="SqlServer" identity="true"/>
         </table>-->
-        <table tableName="view_JEHR_ERPUser" domainObjectName="SysUser"
+        <table tableName="view_JEHR_work_order" domainObjectName="ViewWorkOrder"
                enableDeleteByExample="false"
                enableDeleteByPrimaryKey="false"
                enableInsert="false"
