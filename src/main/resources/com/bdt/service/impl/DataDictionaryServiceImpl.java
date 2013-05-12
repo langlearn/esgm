@@ -56,4 +56,12 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         page.setRoot(DataDictionarys);
         return page;
     }
+
+    @Override
+    public List<DataDictionary> queryByParentCode(String parentCode){
+        DataDictionaryExample example=new DataDictionaryExample();
+        DataDictionaryExample.Criteria criteria=example.createCriteria();
+        criteria.andParentCodeEqualTo(parentCode);
+        return dataDictionaryMapper.selectByExample(example);
+    }
 }

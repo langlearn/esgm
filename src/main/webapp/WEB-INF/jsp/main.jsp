@@ -40,7 +40,7 @@
             };
 
             var zNodes =[
-                { id:1, pId:0, name:"百度", src:"http://www.baidu.cn"},
+                { id:1, pId:0, name:"项目", src:"project.do"},
                 { id:2, pId:0, name:"基础数据", src:"baseinfo.do"},
                 { id:4, pId:0, name:"工作日志", src:"workdiary.do"},
                 { id:5, pId:0, name:"数据字典", src:"datadictionary.do"},
