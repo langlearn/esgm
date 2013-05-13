@@ -19,7 +19,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ProjectAction extends MyActionSupport<Project> {
-    private Project model=new Project();
+    private Project model = new Project();
 
     @Override
     public Project getModel() {
@@ -31,32 +31,32 @@ public class ProjectAction extends MyActionSupport<Project> {
     @Inject
     private DataDictionaryService dataDictionaryService;
 
-    public void add(){
+    public void add() {
         service.add(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void modify(){
-        String pid=request.getParameter("pId");
+    public void modify() {
+        String pid = request.getParameter("pId");
         model.setpId(Integer.parseInt(pid));
         service.modify(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void delete(){
-        String rids=request.getParameter("rids");
+    public void delete() {
+        String rids = request.getParameter("rids");
         service.delete(rids);
         responseUtil.writeSuccess(response);
     }
 
-    public void query(){
-        Page<Project> result= service.queryByPage(model, start, limit);
-        responseUtil.writeJson(response,result);
+    public void query() {
+        Page<Project> result = service.queryByPage(model, start, limit);
+        responseUtil.writeJson(response, result);
     }
 
     public String execute() throws JsonProcessingException {
-        List<DataDictionary> dataDictionaries=dataDictionaryService.queryByParentCode("001");
-        request.setAttribute("dataDictionaries",objectMapper.writeValueAsString(dataDictionaries));
+        List<DataDictionary> dataDictionaries = dataDictionaryService.queryByParentCode("001");
+        request.setAttribute("dataDictionaries", objectMapper.writeValueAsString(dataDictionaries));
         return SUCCESS;
     }
 }

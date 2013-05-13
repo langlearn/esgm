@@ -21,5 +21,7 @@ public interface DataDictionaryService {
 
     Page<DataDictionary> queryByPage(DataDictionary model, Integer start, Integer limit);
 
+    List<DataDictionary> queryByList(DataDictionary model);
+
     List<DataDictionary> queryByParentCode(String parentCode);
 }

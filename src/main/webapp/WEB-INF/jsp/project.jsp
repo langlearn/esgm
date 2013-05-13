@@ -11,101 +11,101 @@
     <title></title>
     <script type="text/javascript">
         $.extend($.fn.window.defaults, {
-            collapsible:false,
-            minimizable:false,
-            maximizable:false,
-            resizable:false,
-            modal:true
+            collapsible: false,
+            minimizable: false,
+            maximizable: false,
+            resizable: false,
+            modal: true
         });
-        $.extend($.fn.datagrid.defaults,{
-            striped:true,
-            rownumbers:true
+        $.extend($.fn.datagrid.defaults, {
+            striped: true,
+            rownumbers: true
         });
-        function getRids(res,p){
-            p=p||'rid';
-            var ids=[];
-            for(var i=0;i<res.length;i++){
+        function getRids(res, p) {
+            p = p || 'rid';
+            var ids = [];
+            for (var i = 0; i < res.length; i++) {
                 ids.push(res[i][p]);
             }
             return ids.join(',');
         }
-        function getDictionaryName(dictionaryCode){
-            var data=${dataDictionaries};
-            for(var i=0;i<data.length;i++){
-                var re=data[i];
-                if(re.dictionaryCode==dictionaryCode){
+        function getDictionaryName(dictionaryCode) {
+            var data =${dataDictionaries};
+            for (var i = 0; i < data.length; i++) {
+                var re = data[i];
+                if (re.dictionaryCode == dictionaryCode) {
                     return re.dictionaryName;
                 }
             }
             return "";
         }
-        $(function(){
+        $(function () {
             //查询
-            $('#btn-query').click(function(){
-                var projectName=$('#q_projectName').val();
-                var businessTypeCode=$('#q_businessTypeCode').combobox('getValue');
-                $('#grid').datagrid('load',{
-                    projectName:projectName,
-                    businessTypeCode:businessTypeCode
+            $('#btn-query').click(function () {
+                var projectName = $('#q_projectName').val();
+                var businessTypeCode = $('#q_businessTypeCode').combobox('getValue');
+                $('#grid').datagrid('load', {
+                    projectName: projectName,
+                    businessTypeCode: businessTypeCode
                 });
             });
 
             //添加
-            $('#btn-add').bind('click', function(){
+            $('#btn-add').bind('click', function () {
                 $('#add_ff').form('reset');
                 $('#add_win').window('open');
             });
 
-            $('#btn_add_win_cancel').click(function(){
+            $('#btn_add_win_cancel').click(function () {
                 $('#add_win').window('close');
             });
-            $('#btn_add_win_ok').click(function(){
+            $('#btn_add_win_ok').click(function () {
                 $('#add_ff').submit();
             });
 
             $('#add_ff').form({
-                success:function(data){
+                success: function (data) {
                     $('#add_win').window('close');
                     $('#grid').datagrid('reload');
                 }
             });
 
             //修改
-            $('#btn-modify').bind('click', function(){
-                var res=$('#grid').datagrid('getSelections');
-                if(res.length==1){
-                    $('#modify_ff').form('load',res[0]);
+            $('#btn-modify').bind('click', function () {
+                var res = $('#grid').datagrid('getSelections');
+                if (res.length == 1) {
+                    $('#modify_ff').form('load', res[0]);
                     $('#modify_win').window('open');
-                }else{
-                    $.messager.alert('系统提示','请选中一条!');
+                } else {
+                    $.messager.alert('系统提示', '请选中一条!');
                 }
             });
 
-            $('#btn_modify_win_cancel').click(function(){
+            $('#btn_modify_win_cancel').click(function () {
                 $('#modify_win').window('close');
             });
-            $('#btn_modify_win_ok').click(function(){
+            $('#btn_modify_win_ok').click(function () {
                 $('#modify_ff').submit();
             });
             $('#modify_ff').form({
-                success:function(data){
+                success: function (data) {
                     $('#modify_win').window('close');
                     $('#grid').datagrid('reload');
                 }
             });
 
             //删除
-            $('#btn-delete').click(function(){
-                var res=$('#grid').datagrid('getSelections');
-                if(res.length>0){
-                    var rids=getRids(res,'pId');
-                    $.getJSON('project!delete.do',{rids:rids},function(){
-                        $.messager.alert('系统提示','删除成功','',function(){
+            $('#btn-delete').click(function () {
+                var res = $('#grid').datagrid('getSelections');
+                if (res.length > 0) {
+                    var rids = getRids(res, 'pId');
+                    $.getJSON('project!delete.do', {rids: rids}, function () {
+                        $.messager.alert('系统提示', '删除成功', '', function () {
                             $('#grid').datagrid('reload');
                         });
                     });
-                }else{
-                    $.messager.alert('系统提示','请选中一些记录!');
+                } else {
+                    $.messager.alert('系统提示', '请选中一些记录!');
                 }
             });
         });
@@ -127,7 +127,8 @@
             <th data-options="field:'projectName',width:100">项目名称</th>
             <th data-options="field:'businessTypeCode',width:100,formatter:function(value,row,index){
 				return getDictionaryName(value);
-			}">业务类型名</th>
+			}">业务类型名
+            </th>
             <th data-options="field:'remark',width:100">备注</th>
         </tr>
         </thead>
@@ -139,13 +140,13 @@
             项目类型:<input id="q_businessTypeCode" class="easyui-combobox" data-options='
 		valueField: "dictionaryCode",
 		textField: "dictionaryName",
-		data:${dataDictionaries}' />
+		data:${dataDictionaries}'/>
             <a class="easyui-linkbutton" id="btn-query" iconCls="icon-search" plain="true"></a>
         </div>
         <%--操作--%>
         <div>
-            <a class="easyui-linkbutton" id="btn-add"  plain="true">添加</a>
-            <a class="easyui-linkbutton" id="btn-modify"  plain="true">修改</a>
+            <a class="easyui-linkbutton" id="btn-add" plain="true">添加</a>
+            <a class="easyui-linkbutton" id="btn-modify" plain="true">修改</a>
             <a class="easyui-linkbutton" id="btn-delete" plain="true">删除</a>
         </div>
     </div>
@@ -163,7 +164,7 @@
 		data:${dataDictionaries},
 		onSelect: function(rec){
             $("#add_ff :input[name=\"businessTypeId\"]").val(rec.ddId);
-        }' /></td>
+        }'/></td>
             </tr>
             <tr>
                 <td>项目名称:</td>
@@ -177,7 +178,8 @@
         </table>
         <div data-options="border:false" style="text-align:right;">
             <a class="easyui-linkbutton" id="btn_add_win_ok" data-options="iconCls:'icon-ok'" href="javascript:void(0)">确定</a>
-            <a class="easyui-linkbutton" id="btn_add_win_cancel" data-options="iconCls:'icon-cancel'" href="javascript:void(0)">取消</a>
+            <a class="easyui-linkbutton" id="btn_add_win_cancel" data-options="iconCls:'icon-cancel'"
+               href="javascript:void(0)">取消</a>
         </div>
     </form>
 </div>
@@ -195,7 +197,7 @@
 		data:${dataDictionaries},
 		onSelect: function(rec){
             $("#add_ff :input[name=\"businessTypeId\"]").val(rec.ddId);
-        }' /></td>
+        }'/></td>
             </tr>
             <tr>
                 <td>项目名称:</td>
@@ -208,8 +210,10 @@
             </tr>
         </table>
         <div data-options="border:false" style="text-align:right;">
-            <a class="easyui-linkbutton" id="btn_modify_win_ok" data-options="iconCls:'icon-ok'" href="javascript:void(0)">确定</a>
-            <a class="easyui-linkbutton" id="btn_modify_win_cancel" data-options="iconCls:'icon-cancel'" href="javascript:void(0)">取消</a>
+            <a class="easyui-linkbutton" id="btn_modify_win_ok" data-options="iconCls:'icon-ok'"
+               href="javascript:void(0)">确定</a>
+            <a class="easyui-linkbutton" id="btn_modify_win_cancel" data-options="iconCls:'icon-cancel'"
+               href="javascript:void(0)">取消</a>
         </div>
     </form>
 </div>

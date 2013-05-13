@@ -27,36 +27,36 @@ public class ProjectServiceImpl implements ProjectService {
     private AddedMapper addedMapper;
 
     @Override
-    public void add(Project model){
+    public void add(Project model) {
         projectMapper.insert(model);
     }
 
     @Override
-    public void modify(Project model){
+    public void modify(Project model) {
         projectMapper.updateByPrimaryKeySelective(model);
     }
 
     @Override
-    public void delete(String rids){
-        List<Integer> ids= MyStrUtil.stringToListInteger(rids);
-        ProjectExample example=new ProjectExample();
-        ProjectExample.Criteria criteria=example.createCriteria();
+    public void delete(String rids) {
+        List<Integer> ids = MyStrUtil.stringToListInteger(rids);
+        ProjectExample example = new ProjectExample();
+        ProjectExample.Criteria criteria = example.createCriteria();
         criteria.andPIdIn(ids);
         projectMapper.deleteByExample(example);
     }
 
     @Override
-    public Page<Project> queryByPage(Project model, Integer start, Integer limit){
-        Page<Project> page=new Page<Project>(start,limit);
-        ProjectExample example=new ProjectExample();
-        ProjectExample.Criteria criteria=example.createCriteria();
-        if(StringUtils.isNotBlank(model.getProjectName()))
-            criteria.andProjectNameLike("%"+model.getProjectName()+"%");
-        if(StringUtils.isNotBlank(model.getBusinessTypeCode())){
+    public Page<Project> queryByPage(Project model, Integer start, Integer limit) {
+        Page<Project> page = new Page<Project>(start, limit);
+        ProjectExample example = new ProjectExample();
+        ProjectExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(model.getProjectName()))
+            criteria.andProjectNameLike("%" + model.getProjectName() + "%");
+        if (StringUtils.isNotBlank(model.getBusinessTypeCode())) {
             criteria.andBusinessTypeCodeEqualTo(model.getBusinessTypeCode());
         }
-        int count=projectMapper.countByExample(example);
-        List<Project> projects=projectMapper.selectByExample(example,page.createRowBounds());
+        int count = projectMapper.countByExample(example);
+        List<Project> projects = projectMapper.selectByExample(example, page.createRowBounds());
         page.setTotal(count);
         page.setRoot(projects);
         return page;

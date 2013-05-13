@@ -1,67 +1,43 @@
 package com.bdt.mapper;
 
-import com.bdt.bean.Project;
-import com.bdt.bean.ProjectExample;
-import com.bdt.bean.ProjectExample.Criteria;
-import com.bdt.bean.ProjectExample.Criterion;
+import com.bdt.bean.ViewWorkDiaryDetailExample;
+import com.bdt.bean.ViewWorkDiaryDetailExample.Criteria;
+import com.bdt.bean.ViewWorkDiaryDetailExample.Criterion;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
-public class ProjectSqlProvider {
+public class ViewWorkDiaryDetailSqlProvider {
 
-    public String countByExample(ProjectExample example) {
+    public String countByExample(ViewWorkDiaryDetailExample example) {
         BEGIN();
         SELECT("count(*)");
-        FROM("JEHR_project");
+        FROM("view_JEHR_work_diary_detail");
         applyWhere(example, false);
         return SQL();
     }
 
-    public String deleteByExample(ProjectExample example) {
-        BEGIN();
-        DELETE_FROM("JEHR_project");
-        applyWhere(example, false);
-        return SQL();
-    }
-
-    public String insertSelective(Project record) {
-        BEGIN();
-        INSERT_INTO("JEHR_project");
-
-        if (record.getBusinessTypeId() != null) {
-            VALUES("business_type_id", "#{businessTypeId,jdbcType=INTEGER}");
-        }
-
-        if (record.getProjectName() != null) {
-            VALUES("project_name", "#{projectName,jdbcType=VARCHAR}");
-        }
-
-        if (record.getRemark() != null) {
-            VALUES("remark", "#{remark,jdbcType=VARCHAR}");
-        }
-
-        if (record.getBusinessTypeCode() != null) {
-            VALUES("business_type_code", "#{businessTypeCode,jdbcType=VARCHAR}");
-        }
-
-        return SQL();
-    }
-
-    public String selectByExample(ProjectExample example) {
+    public String selectByExample(ViewWorkDiaryDetailExample example) {
         BEGIN();
         if (example != null && example.isDistinct()) {
-            SELECT_DISTINCT("p_id");
+            SELECT_DISTINCT("wd_id");
         } else {
-            SELECT("p_id");
+            SELECT("wd_id");
         }
-        SELECT("business_type_id");
-        SELECT("project_name");
+        SELECT("work_time");
+        SELECT("user_id");
+        SELECT("task_id");
+        SELECT("job_content");
         SELECT("remark");
-        SELECT("business_type_code");
-        FROM("JEHR_project");
+        SELECT("report_time");
+        SELECT("work_order_id");
+        SELECT("work_type_code");
+        SELECT("work_hour");
+        SELECT("work_order_title");
+        SELECT("dictionary_name");
+        SELECT("dictionary_code");
+        FROM("view_JEHR_work_diary_detail");
         applyWhere(example, false);
 
         if (example != null && example.getOrderByClause() != null) {
@@ -71,78 +47,7 @@ public class ProjectSqlProvider {
         return SQL();
     }
 
-    public String updateByExampleSelective(Map<String, Object> parameter) {
-        Project record = (Project) parameter.get("record");
-        ProjectExample example = (ProjectExample) parameter.get("example");
-
-        BEGIN();
-        UPDATE("JEHR_project");
-
-        if (record.getpId() != null) {
-            SET("p_id = #{record.pId,jdbcType=INTEGER}");
-        }
-
-        if (record.getBusinessTypeId() != null) {
-            SET("business_type_id = #{record.businessTypeId,jdbcType=INTEGER}");
-        }
-
-        if (record.getProjectName() != null) {
-            SET("project_name = #{record.projectName,jdbcType=VARCHAR}");
-        }
-
-        if (record.getRemark() != null) {
-            SET("remark = #{record.remark,jdbcType=VARCHAR}");
-        }
-
-        if (record.getBusinessTypeCode() != null) {
-            SET("business_type_code = #{record.businessTypeCode,jdbcType=VARCHAR}");
-        }
-
-        applyWhere(example, true);
-        return SQL();
-    }
-
-    public String updateByExample(Map<String, Object> parameter) {
-        BEGIN();
-        UPDATE("JEHR_project");
-
-        SET("p_id = #{record.pId,jdbcType=INTEGER}");
-        SET("business_type_id = #{record.businessTypeId,jdbcType=INTEGER}");
-        SET("project_name = #{record.projectName,jdbcType=VARCHAR}");
-        SET("remark = #{record.remark,jdbcType=VARCHAR}");
-        SET("business_type_code = #{record.businessTypeCode,jdbcType=VARCHAR}");
-
-        ProjectExample example = (ProjectExample) parameter.get("example");
-        applyWhere(example, true);
-        return SQL();
-    }
-
-    public String updateByPrimaryKeySelective(Project record) {
-        BEGIN();
-        UPDATE("JEHR_project");
-
-        if (record.getBusinessTypeId() != null) {
-            SET("business_type_id = #{businessTypeId,jdbcType=INTEGER}");
-        }
-
-        if (record.getProjectName() != null) {
-            SET("project_name = #{projectName,jdbcType=VARCHAR}");
-        }
-
-        if (record.getRemark() != null) {
-            SET("remark = #{remark,jdbcType=VARCHAR}");
-        }
-
-        if (record.getBusinessTypeCode() != null) {
-            SET("business_type_code = #{businessTypeCode,jdbcType=VARCHAR}");
-        }
-
-        WHERE("p_id = #{pId,jdbcType=INTEGER}");
-
-        return SQL();
-    }
-
-    protected void applyWhere(ProjectExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(ViewWorkDiaryDetailExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
