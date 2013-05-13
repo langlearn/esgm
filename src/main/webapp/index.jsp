@@ -3,25 +3,42 @@
 <html>
 <head>
     <title></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-    <link href="css/ember-grid.min.css" rel="stylesheet" media="screen">
+    <script type="text/javascript">
+        $(function(){
+            $('#login_ff').form({
+                success:function(data){
+                    var data = eval('(' + data + ')');
+                    if (data.success){
+                        window.location.href="main.do";
+                    }else{
+                        alert(data.error);
+                    }
+
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-<script type="text/x-handlebars" data-template-name="application">
-    <div class="container">
-        <h1>Ember Grid <small class="muted">by Premysl Krajcovic</small></h1>
-        {{outlet}}
-    </div>
-</script>
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="ember/handlebars.js"></script>
-<script type="text/javascript" src="ember/ember-1.0.0-rc.3.min.js"></script>
-<script type="text/javascript" src="ember/ember-data.js"></script>
-<script type="text/javascript" src="ember/ember-grid.js"></script>
-<script type="text/javascript" src="data.js"></script>
-<script type="text/javascript" src="basic.js"></script>
+<center>
+    <form id="login_ff" action="login!verify.do" method="post">
+    <table>
+        <tr>
+            <td>用户名：</td>
+            <td><input type="text" class="easyui-validatebox" required="true" name="username"></td>
+        </tr>
+        <tr>
+            <td>密码：</td>
+            <td><input type="password" class="easyui-validatebox" required="true" name="userpwd"></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="登陆">
+                <input type="button" value="清空">
+            </td>
+        </tr>
+    </table>
+    </form>
+</center>
 </body>
 </html>

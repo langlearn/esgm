@@ -26,7 +26,7 @@
      */
     var tmp = location.protocol.indexOf("file")==-1 ? location.pathname : location.href;
     //URL = window.UEDITOR_HOME_URL||tmp.substr(0,tmp.lastIndexOf("\/")+1).replace("_examples/","").replace("website/","");//这里你可以配置成ueditor目录在您网站的相对路径或者绝对路径（指以http开头的绝对路径）
-    URL = window.UEDITOR_HOME_URL||"/esgm/ueditor/";
+    URL = window.UEDITOR_HOME_URL||"/jehr/ueditor/";
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
      */

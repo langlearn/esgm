@@ -5,6 +5,8 @@ import com.bdt.common.bean.Page;
 
 import java.util.List;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Lim
@@ -22,4 +24,6 @@ public interface DataDictionaryService {
     Page<DataDictionary> queryByPage(DataDictionary model, Integer start, Integer limit);
 
     List<DataDictionary> queryByList(DataDictionary model);
+
+    List<DataDictionary> queryByParentCode(String parentCode);
 }

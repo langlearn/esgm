@@ -22,6 +22,8 @@
     <script type="text/javascript" src="${ctx}/jquery-easyui/1.3.3/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="${ctx}/jquery-easyui/1.3.3/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="${ctx}/ztree/js/jquery.ztree.core-3.5.min.js"></script>
+    <script type="text/javascript" src="${ctx}/ueditor/editor_config.js"></script>
+    <script type="text/javascript" src="${ctx}/ueditor/editor_all.js"></script>
     <sitemesh:head/>
 </head>
 
