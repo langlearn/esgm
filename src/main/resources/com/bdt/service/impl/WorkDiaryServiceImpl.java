@@ -82,6 +82,7 @@ public class WorkDiaryServiceImpl implements WorkDiaryService {
             criteria.andWorkTimeIsNotNull();
         }
         int count = viewWorkDiaryMapper.countByExample(example);
+        example.setOrderByClause("work_time DESC");
         List<ViewWorkDiary> WorkDiarys = viewWorkDiaryMapper.selectByExample(example, page.createRowBounds());
         page.setTotal(count);
         page.setRoot(WorkDiarys);

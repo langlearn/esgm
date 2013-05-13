@@ -27,7 +27,8 @@ public interface ViewWorkDiaryDetailMapper {
             @Result(column = "work_type_code", property = "workTypeCode", jdbcType = JdbcType.VARCHAR),
             @Result(column = "work_hour", property = "workHour", jdbcType = JdbcType.DECIMAL),
             @Result(column = "work_order_title", property = "workOrderTitle", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "dictionary_name", property = "dictionaryName", jdbcType = JdbcType.VARCHAR)
+            @Result(column = "dictionary_name", property = "dictionaryName", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "dictionary_code", property = "dictionaryCode", jdbcType = JdbcType.VARCHAR)
     })
     List<ViewWorkDiaryDetail> selectByExample(ViewWorkDiaryDetailExample example);
 

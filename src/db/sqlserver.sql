@@ -184,8 +184,7 @@ GROUP BY a.ID, a.UserName,a.Department,b.work_time;
 /* ******************************************************************************************************************* */
 --2013-05-12
 --新增view_JEHR_work_diary_detail
-create view view_JEHR_work_diary_detail as select t1.*,t2.work_order_title,t3.dictionary_name from JEHR_work_diary t1 left join JEHR_work_order t2 on t1.work_order_id=t2.wo_id
-left join JEHR_data_dictionary t3 on t1.work_type_code=t3.dictionary_code
-
+create view view_JEHR_work_diary_detail as select t1.*,t2.work_order_title,t3.dictionary_name,t3.dictionary_code from JEHR_work_diary t1 left join JEHR_work_order t2 on t1.work_order_id=t2.wo_id
+left join JEHR_data_dictionary t3 on t1.work_type_code=t3.dictionary_code;
 
 

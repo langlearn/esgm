@@ -30,6 +30,8 @@ public class ViewWorkDiaryDetail {
 
     private String dictionaryName;
 
+    private String dictionaryCode;
+
     public Integer getWdId() {
         return wdId;
     }
@@ -126,5 +128,13 @@ public class ViewWorkDiaryDetail {
 
     public void setDictionaryName(String dictionaryName) {
         this.dictionaryName = dictionaryName == null ? null : dictionaryName.trim();
+    }
+
+    public String getDictionaryCode() {
+        return dictionaryCode;
+    }
+
+    public void setDictionaryCode(String dictionaryCode) {
+        this.dictionaryCode = dictionaryCode == null ? null : dictionaryCode.trim();
     }
 }

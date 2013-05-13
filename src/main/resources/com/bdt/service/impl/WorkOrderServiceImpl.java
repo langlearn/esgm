@@ -81,4 +81,24 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         page.setRoot(WorkOrders);
         return page;
     }
+
+    @Override
+    public List<ViewWorkOrder> queryByList(ViewWorkOrder model) {
+        ViewWorkOrderExample example = new ViewWorkOrderExample();
+        ViewWorkOrderExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(model.getWorkOrderTitle()))
+            criteria.andWorkOrderTitleLike("%" + model.getWorkOrderTitle() + "%");
+        if (StringUtils.isNotBlank(model.getProjectName()))
+            criteria.andProjectNameLike("%" + model.getProjectName() + "%");
+        if (model.getAcceptStatus() != null)
+            criteria.andAcceptStatusEqualTo(model.getAcceptStatus());
+        if (model.getAcceptUserId() != null)
+            criteria.andAcceptUserIdEqualTo(model.getAcceptUserId());
+        if (model.getCheckReceiveStatus() != null)
+            criteria.andCheckReceiveStatusEqualTo(model.getCheckReceiveStatus());
+        if (model.getConfirmStatus() != null)
+            criteria.andConfirmStatusEqualTo(model.getConfirmStatus());
+        List<ViewWorkOrder> workOrders = viewWorkOrderMapper.selectByExample(example);
+        return workOrders;
+    }
 }

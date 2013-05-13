@@ -875,6 +875,76 @@ public class ViewWorkDiaryDetailExample {
             addCriterion("dictionary_name not between", value1, value2, "dictionaryName");
             return (Criteria) this;
         }
+
+        public Criteria andDictionaryCodeIsNull() {
+            addCriterion("dictionary_code is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeIsNotNull() {
+            addCriterion("dictionary_code is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeEqualTo(String value) {
+            addCriterion("dictionary_code =", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeNotEqualTo(String value) {
+            addCriterion("dictionary_code <>", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeGreaterThan(String value) {
+            addCriterion("dictionary_code >", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("dictionary_code >=", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeLessThan(String value) {
+            addCriterion("dictionary_code <", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeLessThanOrEqualTo(String value) {
+            addCriterion("dictionary_code <=", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeLike(String value) {
+            addCriterion("dictionary_code like", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeNotLike(String value) {
+            addCriterion("dictionary_code not like", value, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeIn(List<String> values) {
+            addCriterion("dictionary_code in", values, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeNotIn(List<String> values) {
+            addCriterion("dictionary_code not in", values, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeBetween(String value1, String value2) {
+            addCriterion("dictionary_code between", value1, value2, "dictionaryCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andDictionaryCodeNotBetween(String value1, String value2) {
+            addCriterion("dictionary_code not between", value1, value2, "dictionaryCode");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

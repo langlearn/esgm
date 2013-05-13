@@ -36,6 +36,7 @@ public class ViewWorkDiaryDetailSqlProvider {
         SELECT("work_hour");
         SELECT("work_order_title");
         SELECT("dictionary_name");
+        SELECT("dictionary_code");
         FROM("view_JEHR_work_diary_detail");
         applyWhere(example, false);
 

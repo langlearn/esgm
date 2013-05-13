@@ -22,13 +22,7 @@
             }
             return ids.join(',');
         }
-        function formatUse(val, row) {
-            if (val == 1) {
-                return '是';
-            } else {
-                return '否';
-            }
-        }
+
         $(function () {
             //查询
             $('#btn-query').click(function () {
@@ -93,7 +87,7 @@
                     $.messager.confirm('删除', '你确定要删除这些记录吗?', function (r) {
                         if (r) {
 
-                            var rids = getRids(res, 'ddId');
+                            var rids = getRids(res, 'wdId');
                             $.getJSON('workdiary!delete.do', {rids: rids}, function () {
                                 $.messager.alert('系统提示', '删除成功', '', function () {
                                     $('#grid-center').datagrid('reload');
@@ -155,6 +149,7 @@
            fit:true,url:'workdiary!queryDetail.do',
            fitColumns:true,
            pagination:true,
+           singleSelect:true,
            toolbar:'#tb-center',
            title:'日志详情'">
         <thead>
@@ -187,22 +182,21 @@
                 <td>工单:</td>
                 <td>
                     <input class="easyui-combobox"
-                           name="work_order_id"
+                           name="workOrderId"
                            data-options="
-                        url:'datadictionary!queryList.do',
-                        valueField:'ddId',
-                        textField:'dictionaryName',
+                        url:'workdiary!workOrder.do',
+                        valueField:'woId',
+                        textField:'workOrderTitle',
                         panelHeight:'auto'
                     ">
                 </td>
                 <td>工作类型:</td>
                 <td>
-                    <input name="workTypeCode" class="easyui-combobox" data-options="
-                        url:'datadictionary!queryList.do?parentCode=002',
-                        valueField:'ddId',
-                        textField:'dictionaryName',
-                        panelHeight:'auto'
-                    ">
+                    <input name="workTypeCode" class="easyui-combobox" required="true" data-options='
+                        valueField: "dictionaryCode",
+                        textField: "dictionaryName",
+                        data:${dataDictionaries}
+                        '/>
                 </td>
 
             </tr>
@@ -240,22 +234,21 @@
                 <td>工单:</td>
                 <td>
                     <input class="easyui-combobox"
-                           name="work_order_id"
+                           name="workOrderId"
                            data-options="
-                        url:'datadictionary!queryList.do',
-                        valueField:'ddId',
-                        textField:'dictionaryName',
+                        url:'workdiary!workOrder.do',
+                        valueField:'woId',
+                        textField:'workOrderTitle',
                         panelHeight:'auto',
-                    " disabled="disabled">
+                    ">
                 </td>
                 <td>工作类型:</td>
                 <td>
-                    <input name="workTypeCode" class="easyui-combobox" data-options="
-                        url:'datadictionary!queryList.do?parentCode=002',
-                        valueField:'ddId',
-                        textField:'dictionaryName',
-                        panelHeight:'auto'
-                    " disabled="disabled">
+                    <input name="workTypeCode" class="easyui-combobox" required="true" data-options='
+                        valueField: "dictionaryCode",
+                        textField: "dictionaryName",
+                        data:${dataDictionaries}
+                        '/>
                 </td>
 
             </tr>
