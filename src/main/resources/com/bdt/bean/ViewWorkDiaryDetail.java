@@ -1,9 +1,11 @@
 package com.bdt.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class WorkDiary {
+public class ViewWorkDiaryDetail {
     private Integer wdId;
 
     private Date workTime;
@@ -24,25 +26,9 @@ public class WorkDiary {
 
     private BigDecimal workHour;
 
-    //临时字段
-    private String department;
-    private String userName;
+    private String workOrderTitle;
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    private String dictionaryName;
 
     public Integer getWdId() {
         return wdId;
@@ -52,6 +38,7 @@ public class WorkDiary {
         this.wdId = wdId;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     public Date getWorkTime() {
         return workTime;
     }
@@ -92,6 +79,7 @@ public class WorkDiary {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     public Date getReportTime() {
         return reportTime;
     }
@@ -122,5 +110,21 @@ public class WorkDiary {
 
     public void setWorkHour(BigDecimal workHour) {
         this.workHour = workHour;
+    }
+
+    public String getWorkOrderTitle() {
+        return workOrderTitle;
+    }
+
+    public void setWorkOrderTitle(String workOrderTitle) {
+        this.workOrderTitle = workOrderTitle == null ? null : workOrderTitle.trim();
+    }
+
+    public String getDictionaryName() {
+        return dictionaryName;
+    }
+
+    public void setDictionaryName(String dictionaryName) {
+        this.dictionaryName = dictionaryName == null ? null : dictionaryName.trim();
     }
 }

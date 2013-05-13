@@ -3,6 +3,8 @@ package com.bdt.service;
 import com.bdt.bean.DataDictionary;
 import com.bdt.common.bean.Page;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Lim
@@ -18,4 +20,6 @@ public interface DataDictionaryService {
     void delete(String rids);
 
     Page<DataDictionary> queryByPage(DataDictionary model, Integer start, Integer limit);
+
+    List<DataDictionary> queryByList(DataDictionary model);
 }

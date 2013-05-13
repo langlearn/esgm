@@ -140,7 +140,7 @@ sign_for_time datetime
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- JEHR_work_diary
+-- 修改JEHR_work_diary 加入以下字段
 
 alter table JEHR_work_diary add report_time datetime;
 alter table JEHR_work_diary add work_order_id int;
@@ -150,6 +150,40 @@ alter table JEHR_work_diary add work_hour decimal(10, 1);
 /* ******************************************************************************************************************* */
 
 -- 2013-05-09
--- view_JEHR_user
+-- 新增view_JEHR_user
 create view view_JEHR_user as select t1.ID user_id, t1.UserName, t1.UserPwd, t1.TrueName, t1.Department, t1.ZhiWei, t1.ZaiGang, t1.EmailStr, t1.Sex,t2.ur_id, t2.is_able_work_order_report, t2.is_able_work_order_sponsor, t2.is_able_work_order_accept, t2.is_public_work_diary from view_JEHR_ERPUser t1
 left join JEHR_user t2 on t1.id=t2.user_id
+
+/* ******************************************************************************************************************* */
+
+-- 2013-05-09
+-- view_JEHR_work_order
+
+CREATE VIEW [dbo].[view_JEHR_work_order]
+AS
+SELECT dbo.JEHR_work_order.*,dbo.view_JEHR_ERPUser.TrueName AS report_user, view_JEHR_ERPUser_1.TrueName AS sponsor_user,
+                 view_JEHR_ERPUser_2.TrueName AS accept_user,dbo.JEHR_project.project_name
+FROM      dbo.JEHR_work_order
+left JOIN dbo.view_JEHR_ERPUser ON dbo.JEHR_work_order.report_user_id = dbo.view_JEHR_ERPUser.ID
+left JOIN dbo.view_JEHR_ERPUser AS view_JEHR_ERPUser_1 ON dbo.JEHR_work_order.sponsor_user_id = view_JEHR_ERPUser_1.ID
+left JOIN dbo.view_JEHR_ERPUser AS view_JEHR_ERPUser_2 ON
+                dbo.JEHR_work_order.accept_user_id = view_JEHR_ERPUser_2.ID
+left join dbo.JEHR_project on dbo.JEHR_work_order.project_id=dbo.JEHR_project.p_id
+
+/* ******************************************************************************************************************* */
+--2013-05-12
+--修改view_JEHR_work_diary 添加部门字段
+drop view view_JEHR_work_diary;
+create view view_JEHR_work_diary as
+SELECT a.ID AS user_id, a.UserName AS user_name, a.Department department,b.work_time, SUM(b.work_hour)
+      AS total_hour
+FROM dbo.view_JEHR_ERPUser a LEFT OUTER JOIN
+      dbo.JEHR_work_diary b ON a.ID = b.user_id
+GROUP BY a.ID, a.UserName,a.Department,b.work_time;
+
+/* ******************************************************************************************************************* */
+--2013-05-12
+--新增view_JEHR_work_diary_detail
+create view view_JEHR_work_diary_detail as select t1.*,t2.work_order_title,t3.dictionary_name from JEHR_work_diary t1 left join JEHR_work_order t2 on t1.work_order_id=t2.wo_id
+left join JEHR_data_dictionary t3 on t1.work_type_code=t3.dictionary_code
+

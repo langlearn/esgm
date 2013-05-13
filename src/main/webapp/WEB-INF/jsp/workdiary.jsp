@@ -4,188 +4,288 @@
     <title></title>
     <script type="text/javascript">
         $.extend($.fn.window.defaults, {
-            collapsible:false,
-            minimizable:false,
-            maximizable:false,
-            resizable:false,
-            modal:true
+            collapsible: false,
+            minimizable: false,
+            maximizable: false,
+            resizable: false,
+            modal: true
         });
-        $.extend($.fn.datagrid.defaults,{
-            striped:true,
-            rownumbers:true
+        $.extend($.fn.datagrid.defaults, {
+            striped: true,
+            rownumbers: true
         });
-        function getRids(res,p){
-            p=p||'rid';
-            var ids=[];
-            for(var i=0;i<res.length;i++){
+        function getRids(res, p) {
+            p = p || 'id';
+            var ids = [];
+            for (var i = 0; i < res.length; i++) {
                 ids.push(res[i][p]);
             }
             return ids.join(',');
         }
-        $(function(){
+        function formatUse(val, row) {
+            if (val == 1) {
+                return '是';
+            } else {
+                return '否';
+            }
+        }
+        $(function () {
             //查询
-            $('#btn-query').click(function(){
-                var ccode=$('#q_ccode').val();
-                $('#grid').datagrid('load',{
-                   ccode:ccode
+            $('#btn-query').click(function () {
+                var userName = $('#q-userName').val();
+                var department = $('#q-department').val();
+                var workTime = $('#q-workTime').datebox('getValue');
+                $('#grid-west').datagrid('load', {
+                    userName: userName,
+                    department: department,
+                    workTime: workTime
                 });
             });
 
             //添加
-            $('#btn-add').bind('click', function(){
-                $('#add_ff').form('reset');
-                $('#add_win').window('open');
+            $('#btn-add').bind('click', function () {
+                $('#add-form').form('reset');
+                $('#add-win').window('open');
             });
 
-            $('#btn_add_win_cancel').click(function(){
-                $('#add_win').window('close');
+            $('#btn-add-win-cancel').click(function () {
+                $('#add-win').window('close');
             });
-            $('#btn_add_win_ok').click(function(){
-                $('#add_ff').submit();
+            $('#btn-add-win-ok').click(function () {
+                $('#add-form').submit();
             });
 
-            $('#add_ff').form({
-                success:function(data){
-                    $('#add_win').window('close');
-                    $('#grid').datagrid('reload');
+            $('#add-form').form({
+                success: function (data) {
+                    $('#add-win').window('close');
+                    $('#grid-center').datagrid('reload');
                 }
             });
 
             //修改
-            $('#btn-modify').bind('click', function(){
-                var res=$('#grid').datagrid('getSelections');
-                if(res.length==1){
-                    $('#modify_ff').form('load',res[0]);
-                    $('#modify_win').window('open');
-                }else{
-                    $.messager.alert('系统提示','请选中一条!');
+            $('#btn-modify').bind('click', function () {
+                var res = $('#grid-center').datagrid('getSelections');
+                if (res.length == 1) {
+                    $('#modify-form').form('load', res[0]);
+                    $('#modify-win').window('open');
+                } else {
+                    $.messager.alert('系统提示', '请选中一条!');
                 }
             });
 
-            $('#btn_modify_win_cancel').click(function(){
-                $('#modify_win').window('close');
+            $('#btn-modify-win-cancel').click(function () {
+                $('#modify-win').window('close');
             });
-            $('#btn_modify_win_ok').click(function(){
-                $('#modify_ff').submit();
+            $('#btn-modify-win-ok').click(function () {
+                $('#modify-form').submit();
             });
-            $('#modify_ff').form({
-                success:function(data){
-                    $('#modify_win').window('close');
-                    $('#grid').datagrid('reload');
+            $('#modify-form').form({
+                success: function (data) {
+                    $('#modify-win').window('close');
+                    $('#grid-center').datagrid('reload');
                 }
             });
 
             //删除
-            $('#btn-delete').click(function(){
-                var res=$('#grid').datagrid('getSelections');
-                if(res.length>0){
-                    var rids=getRids(res);
-                    $.getJSON('workdiary!delete.do',{rids:rids},function(){
-                        $.messager.alert('系统提示','删除成功','',function(){
-                            $('#grid').datagrid('reload');
-                        });
+            $('#btn-delete').click(function () {
+                var res = $('#grid-center').datagrid('getSelections');
+                if (res.length > 0) {
+                    $.messager.confirm('删除', '你确定要删除这些记录吗?', function (r) {
+                        if (r) {
+
+                            var rids = getRids(res, 'ddId');
+                            $.getJSON('workdiary!delete.do', {rids: rids}, function () {
+                                $.messager.alert('系统提示', '删除成功', '', function () {
+                                    $('#grid-center').datagrid('reload');
+                                });
+                            });
+
+                        }
                     });
-                }else{
-                    $.messager.alert('系统提示','请选中一些记录!');
+
+                } else {
+                    $.messager.alert('系统提示', '请选中一些记录!');
                 }
             });
 
-            //编辑器
-            $('#btn-ueditor').click(function(){
-                $('#ueditor_win').window('open');
+            //点击侧边栏
+            $('#grid-west').datagrid({
+                onClickRow: function (index, data) {
+                    $('#grid-center').datagrid('load', {
+                        userId: data.userId,
+                        workTime: data.workTime
+                    });
+                }
             });
-            $('#btn_ueditor_win_cancel').click(function(){
-                $('#ueditor_win').window('close');
-            });
-            $('#btn_ueditor_win_ok').click(function(){
-                $('#ueditor_ff').submit();
-            });
-            $('#ueditor_ff').form();
-            var editor = new UE.ui.Editor({
-                initialFrameWidth:500,
-                initialFrameHeight:160,
-                minFrameHeight:160,
-                zIndex:9000
-            });
-            editor.render("editor");
+
         });
     </script>
 </head>
 <body class="easyui-layout">
-<div data-options="region:'center'" style="padding:5px;background:#eee;">
-    <table class="easyui-datagrid" id="grid"
+
+<div data-options="region:'west',split:false,collapsible:false" style="padding:5px;background:#eee;width:350px">
+    <table class="easyui-datagrid" id="grid-west"
            data-options="
            fit:true,url:'workdiary!query.do',
            fitColumns:true,
+           singleSelect:true,
            pagination:true,
-           toolbar:'#tb',
-           title:'数据字典管理'">
+           toolbar:'#tb-west',
+           title:'日志总览'">
         <thead>
         <tr>
-            <th data-options="field:'wdId',checkbox:true"></th>
-            <th data-options="field:'ccode',width:100">Code</th>
-            <th data-options="field:'cname',width:100">Name</th>
+            <th data-options="field:'userName',width:100">姓名</th>
+            <th data-options="field:'workTime',width:100">工作时间</th>
+            <th data-options="field:'totalHour',width:100">总工时</th>
         </tr>
         </thead>
     </table>
-    <div id="tb">
-        <%--查询--%>
-        <div>
-            编号:<input id="q_ccode" type="text"/>
+    <%--查询--%>
+    <div id="tb-west">
+        <div>部门:<input id="q-department" type="text"/></div>
+        <div>姓名:<input id="q-userName" type="text"/></div>
+        <div>时间:<input id="q-workTime" class="easyui-datebox"/>
             <a class="easyui-linkbutton" id="btn-query" iconCls="icon-search" plain="true"></a>
-        </div>
-        <%--操作--%>
-        <div>
-            <a class="easyui-linkbutton" id="btn-add"  plain="true">添加</a>
-            <a class="easyui-linkbutton" id="btn-modify"  plain="true">修改</a>
-            <a class="easyui-linkbutton" id="btn-delete" plain="true">删除</a>
-            <a class="easyui-linkbutton" id="btn-ueditor" plain="true">编辑器</a>
         </div>
     </div>
 </div>
-<div id="add_win" class="easyui-window" data-options="closed:true" title="添加" style="padding:5px;">
-    <form id="add_ff" action="workdiary!add.do" method="post">
+<div data-options="region:'center'" style="padding:5px;background:#eee;">
+    <table class="easyui-datagrid" id="grid-center"
+           data-options="
+           fit:true,url:'workdiary!queryDetail.do',
+           fitColumns:true,
+           pagination:true,
+           toolbar:'#tb-center',
+           title:'日志详情'">
+        <thead>
+        <tr>
+            <th data-options="field:'wdId',checkbox:true"></th>
+            <th data-options="field:'workOrderTitle',width:100">工单标题</th>
+            <th data-options="field:'workHour',width:100">花费工时</th>
+            <th data-options="field:'dictionaryName',width:100">工作类型</th>
+            <th data-options="field:'jobContent',width:200">工作事项</th>
+            <th data-options="field:'remark',width:200">备注</th>
+            <th data-options="field:'reportTime',width:100">填写时间</th>
+        </tr>
+        </thead>
+    </table>
+    <div id="tb-center">
+        <%--操作--%>
+        <div>
+            <a class="easyui-linkbutton" id="btn-add" plain="true">添加</a>
+            <a class="easyui-linkbutton" id="btn-modify" plain="true">修改</a>
+            <a class="easyui-linkbutton" id="btn-delete" plain="true">删除</a>
+        </div>
+    </div>
+</div>
+
+
+<div id="add-win" class="easyui-window" data-options="closed:true" title="添加" style="padding:5px;">
+    <form id="add-form" action="workdiary!add.do" method="post">
         <table>
             <tr>
-                <td>编号:</td>
-                <td><input name="code" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>工单:</td>
+                <td>
+                    <input class="easyui-combobox"
+                           name="work_order_id"
+                           data-options="
+                        url:'datadictionary!queryList.do',
+                        valueField:'ddId',
+                        textField:'dictionaryName',
+                        panelHeight:'auto'
+                    ">
+                </td>
+                <td>工作类型:</td>
+                <td>
+                    <input name="workTypeCode" class="easyui-combobox" data-options="
+                        url:'datadictionary!queryList.do?parentCode=002',
+                        valueField:'ddId',
+                        textField:'dictionaryName',
+                        panelHeight:'auto'
+                    ">
+                </td>
+
             </tr>
             <tr>
-                <td>名称:</td>
-                <td><input name="name" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>花费时间:</td>
+                <td><input name="workHour" class="easyui-numberbox" data-options="precision:1,required:true"/></td>
+                <td>工作时间:</td>
+                <td><input name="workTime" class="easyui-datebox" type="text" required="true"/></td>
+            </tr>
+            <tr>
+                <td>工作事项:</td>
+                <td>
+                    <textarea name="jobContent" style="overflow:auto;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>备注:</td>
+                <td>
+                    <textarea name="remark" style="overflow:auto;"></textarea>
+                </td>
             </tr>
         </table>
         <div data-options="border:false" style="text-align:right;">
-            <a class="easyui-linkbutton" id="btn_add_win_ok" data-options="iconCls:'icon-ok'" href="javascript:void(0)">确定</a>
-            <a class="easyui-linkbutton" id="btn_add_win_cancel" data-options="iconCls:'icon-cancel'" href="javascript:void(0)">取消</a>
+            <a class="easyui-linkbutton" id="btn-add-win-ok" data-options="iconCls:'icon-ok'" href="javascript:void(0)">确定</a>
+            <a class="easyui-linkbutton" id="btn-add-win-cancel" data-options="iconCls:'icon-cancel'"
+               href="javascript:void(0)">取消</a>
         </div>
     </form>
 </div>
-<div id="modify_win" class="easyui-window" data-options="closed:true" title="添加" style="padding:5px;">
-    <form id="modify_ff" action="workdiary!modify.do" method="post">
+<div id="modify-win" class="easyui-window" data-options="closed:true" title="修改" style="padding:5px;">
+    <form id="modify-form" action="workdiary!modify.do" method="post">
+        <input type="hidden" name="wdId"/>
         <table>
-            <input type="hidden" name="rid"/>
             <tr>
-                <td>编号:</td>
-                <td><input name="ccode" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>工单:</td>
+                <td>
+                    <input class="easyui-combobox"
+                           name="work_order_id"
+                           data-options="
+                        url:'datadictionary!queryList.do',
+                        valueField:'ddId',
+                        textField:'dictionaryName',
+                        panelHeight:'auto',
+                    " disabled="disabled">
+                </td>
+                <td>工作类型:</td>
+                <td>
+                    <input name="workTypeCode" class="easyui-combobox" data-options="
+                        url:'datadictionary!queryList.do?parentCode=002',
+                        valueField:'ddId',
+                        textField:'dictionaryName',
+                        panelHeight:'auto'
+                    " disabled="disabled">
+                </td>
+
             </tr>
             <tr>
-                <td>名称:</td>
-                <td><input name="cname" class="easyui-validatebox" type="text" required="true"/></td>
+                <td>花费时间:</td>
+                <td><input name="workHour" class="easyui-numberbox" data-options="precision:1,required:true"/></td>
+                <td>工作时间:</td>
+                <td><input name="workTime" class="easyui-datebox" type="text" required="true"/></td>
+            </tr>
+            <tr>
+                <td>工作事项:</td>
+                <td>
+                    <textarea name="jobContent" style="overflow:auto;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>备注:</td>
+                <td>
+                    <textarea name="remark" style="overflow:auto;"></textarea>
+                </td>
             </tr>
         </table>
         <div data-options="border:false" style="text-align:right;">
-            <a class="easyui-linkbutton" id="btn_modify_win_ok" data-options="iconCls:'icon-ok'" href="javascript:void(0)">确定</a>
-            <a class="easyui-linkbutton" id="btn_modify_win_cancel" data-options="iconCls:'icon-cancel'" href="javascript:void(0)">取消</a>
+            <a class="easyui-linkbutton" id="btn-modify-win-ok" data-options="iconCls:'icon-ok'"
+               href="javascript:void(0)">确定</a>
+            <a class="easyui-linkbutton" id="btn-modify-win-cancel" data-options="iconCls:'icon-cancel'"
+               href="javascript:void(0)">取消</a>
         </div>
     </form>
 </div>
-<div id="ueditor_win" class="easyui-window" data-options="closed:true" title="编辑器" style="width: 520px;height: 410px;">
-    <form action="test.do" method="post" id="ueditor_ff">
-        <script type="text/plain" id="editor" name="myContent" >
-        </script>
-        <button type="submit">Save changes</button>
-    </form>
-</div>
+
 </body>
 </html>

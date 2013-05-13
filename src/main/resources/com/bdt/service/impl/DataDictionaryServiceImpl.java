@@ -21,39 +21,52 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     private DataDictionaryMapper dataDictionaryMapper;
 
     @Override
-    public void add(DataDictionary model){
+    public void add(DataDictionary model) {
         dataDictionaryMapper.insert(model);
     }
 
-    
+
     @Override
-    public void modify(DataDictionary model){
+    public void modify(DataDictionary model) {
         dataDictionaryMapper.updateByPrimaryKeySelective(model);
     }
 
-    
+
     @Override
-    public void delete(String rids){
-        List<Integer> ids= MyStrUtil.stringToListInteger(rids);
-        DataDictionaryExample example=new DataDictionaryExample();
-        DataDictionaryExample.Criteria criteria=example.createCriteria();
+    public void delete(String rids) {
+        List<Integer> ids = MyStrUtil.stringToListInteger(rids);
+        DataDictionaryExample example = new DataDictionaryExample();
+        DataDictionaryExample.Criteria criteria = example.createCriteria();
         criteria.andDdIdIn(ids);
         dataDictionaryMapper.deleteByExample(example);
     }
 
-    
+
     @Override
-    public Page<DataDictionary> queryByPage(DataDictionary model, Integer start, Integer limit){
-        Page<DataDictionary> page=new Page<DataDictionary>(start,limit);
-        DataDictionaryExample example=new DataDictionaryExample();
-        DataDictionaryExample.Criteria criteria=example.createCriteria();
-        if(StringUtils.isNotBlank(model.getDictionaryName())){
-            criteria.andDictionaryNameLike("%"+model.getDictionaryName()+"%");
+    public Page<DataDictionary> queryByPage(DataDictionary model, Integer start, Integer limit) {
+        Page<DataDictionary> page = new Page<DataDictionary>(start, limit);
+        DataDictionaryExample example = new DataDictionaryExample();
+        DataDictionaryExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(model.getDictionaryName())) {
+            criteria.andDictionaryNameLike("%" + model.getDictionaryName() + "%");
         }
-        int count= dataDictionaryMapper.countByExample(example);
-        List<DataDictionary> DataDictionarys= dataDictionaryMapper.selectByExample(example,page.createRowBounds());
+        int count = dataDictionaryMapper.countByExample(example);
+        List<DataDictionary> DataDictionarys = dataDictionaryMapper.selectByExample(example, page.createRowBounds());
         page.setTotal(count);
         page.setRoot(DataDictionarys);
         return page;
+    }
+
+    @Override
+    public List<DataDictionary> queryByList(DataDictionary model) {
+        DataDictionaryExample example = new DataDictionaryExample();
+        DataDictionaryExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(model.getDictionaryCode())) {
+            criteria.andDictionaryCodeEqualTo(model.getDictionaryCode());
+        }
+        if (StringUtils.isNotBlank(model.getParentCode())) {
+            criteria.andParentCodeEqualTo(model.getParentCode());
+        }
+        return dataDictionaryMapper.selectByExample(example);
     }
 }

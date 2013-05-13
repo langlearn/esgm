@@ -1,5 +1,7 @@
 package com.bdt.action;
 
+import com.bdt.bean.ViewWorkDiary;
+import com.bdt.bean.ViewWorkDiaryDetail;
 import com.bdt.bean.WorkDiary;
 import com.bdt.common.base.MyActionSupport;
 import com.bdt.common.bean.Page;
@@ -14,7 +16,7 @@ import javax.inject.Inject;
  */
 public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
 
-    private WorkDiary model=new WorkDiary();
+    private WorkDiary model = new WorkDiary();
 
     @Override
     public WorkDiary getModel() {
@@ -24,24 +26,32 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
     @Inject
     private WorkDiaryService workDiaryService;
 
-    public void add(){
+    public void add() {
         workDiaryService.add(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void modify(){
+    public void modify() {
         workDiaryService.modify(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void delete(){
-        String rids=request.getParameter("rids");
+    public void delete() {
+        String rids = request.getParameter("rids");
         workDiaryService.delete(rids);
         responseUtil.writeSuccess(response);
     }
 
-    public void query(){
-        Page<WorkDiary> result= workDiaryService.queryByPage(model,start,limit);
-        responseUtil.writeJson(response,result);
+    public void query() {
+        Page<ViewWorkDiary> result = workDiaryService.queryViewByPage(model, start, limit);
+        responseUtil.writeJson(response, result);
+    }
+
+    public void queryDetail() {
+        if (null == model.getUserId() || null == model.getWorkTime()) {
+            return;
+        }
+        Page<ViewWorkDiaryDetail> result = workDiaryService.queryDetailViewByPage(model, start, limit);
+        responseUtil.writeJson(response, result);
     }
 }
