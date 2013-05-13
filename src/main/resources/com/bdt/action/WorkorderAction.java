@@ -14,6 +14,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,8 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
     private ProjectService projectService;
 
     public void add(){
+        model.setReportUserId(optid);
+        model.setReportTime(new Date());
         service.add(model);
         responseUtil.writeSuccess(response);
     }
@@ -57,6 +60,26 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
         responseUtil.writeSuccess(response);
     }
 
+    public void confirm() {
+        service.confirm(model.getWoId());
+        responseUtil.writeSuccess(response);
+    }
+
+    public void accept(){
+        String userids=request.getParameter("userids");
+        service.accept(model.getWoId(),userids);
+        responseUtil.writeSuccess(response);
+    }
+    public void check(){
+        service.check(model.getWoId());
+        responseUtil.writeSuccess(response);
+    }
+
+    public void invalid(){
+        service.invalid(model.getWoId(),model.getInvalidReason());
+        responseUtil.writeSuccess(response);
+    }
+
     public void query() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         ViewWorkOrder viewWorkOrder=new ViewWorkOrder();
         PropertyUtils.copyProperties(viewWorkOrder,model);
@@ -65,12 +88,19 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
         responseUtil.writeJson(response,result);
     }
 
+    public void queryCopy(){
+        List<Map> result= service.queryCopy(model.getWoId());
+        responseUtil.writeJson(response,result);
+    }
+
     public String execute() throws JsonProcessingException {
         List<ViewUser> sponsors=userService.queryForSponsor();
         List<ViewUser> accepts=userService.queryForAccept();
         List<Map> projects=projectService.queryProjectTree();
+        List<ViewUser> users=userService.queryAll();
         request.setAttribute("sponsors",sponsors);
         request.setAttribute("accepts",accepts);
+        request.setAttribute("users",objectMapper.writeValueAsString(users));
         request.setAttribute("projects",objectMapper.writeValueAsString(projects));
         return SUCCESS;
     }

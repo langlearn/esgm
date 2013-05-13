@@ -3,6 +3,7 @@ package com.bdt.service.impl;
 import com.bdt.bean.*;
 import com.bdt.common.bean.Page;
 import com.bdt.common.util.MyStrUtil;
+import com.bdt.mapper.AddedMapper;
 import com.bdt.mapper.ViewWorkOrderMapper;
 import com.bdt.mapper.WorkOrderCopyMapper;
 import com.bdt.mapper.WorkOrderMapper;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +29,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     private WorkOrderCopyMapper workOrderCopyMapper;
     @Inject
     private ViewWorkOrderMapper viewWorkOrderMapper;
+    @Inject
+    private AddedMapper addedMapper;
 
     @Override
     public void add(WorkOrder model){
@@ -47,8 +51,8 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         workOrderMapper.deleteByExample(example);
     }
 
-    @Override
-    public void copy(Integer woId, String userids){
+
+    private void copy(Integer woId, String userids){
         final Date COPY_TIME = new Date();
         List<Integer> ids= MyStrUtil.stringToListInteger(userids);
         for (Integer userid:ids){
@@ -80,5 +84,53 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         page.setTotal(count);
         page.setRoot(viewWorkOrders);
         return page;
+    }
+
+    @Override
+    public void confirm(Integer woId) {
+        WorkOrder workOrder=new WorkOrder();
+        workOrder.setWoId(woId);
+        workOrder.setConfirmStatus(new Byte("1"));
+        workOrder.setConfirmTime(new Date());
+        workOrderMapper.updateByPrimaryKeySelective(workOrder);
+    }
+
+    @Override
+    public void check(Integer woId) {
+        WorkOrder workOrder=new WorkOrder();
+        workOrder.setWoId(woId);
+        workOrder.setCheckReceiveStatus(new Byte("1"));
+        workOrder.setCheckReceiveTime(new Date());
+        workOrderMapper.updateByPrimaryKeySelective(workOrder);
+    }
+
+    @Override
+    public void invalid(Integer woId, String invalidReason) {
+        WorkOrder workOrder=new WorkOrder();
+        workOrder.setWoId(woId);
+        workOrder.setCheckReceiveStatus(new Byte("2"));
+        workOrder.setCheckReceiveTime(new Date());
+        workOrder.setInvalidReason(invalidReason);
+        workOrderMapper.updateByPrimaryKeySelective(workOrder);
+    }
+
+
+    @Override
+    public void accept(Integer woId, String userids) {
+        WorkOrder workOrder=new WorkOrder();
+        workOrder.setWoId(woId);
+        workOrder.setAcceptStatus(new Byte("1"));
+        workOrder.setAcceptTime(new Date());
+        workOrderMapper.updateByPrimaryKeySelective(workOrder);
+        WorkOrderCopyExample example=new WorkOrderCopyExample();
+        WorkOrderCopyExample.Criteria criteria=example.createCriteria();
+        criteria.andWorkOrderIdEqualTo(woId);
+        workOrderCopyMapper.deleteByExample(example);
+        copy(woId,userids);
+    }
+
+    @Override
+    public List<Map> queryCopy(Integer woId){
+        return addedMapper.selectWorkOrderCopy(woId);
     }
 }

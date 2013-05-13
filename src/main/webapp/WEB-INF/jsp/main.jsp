@@ -66,8 +66,9 @@
                     </div>
                 </td>
                 <td style="padding-right:5px;text-align:right;vertical-align:bottom;">
-                    <div id="topmenu">
-                        <%--<a href="/index.php">Home</a>--%>
+                    <div id="topmenu" style="color:#fff;">
+                        ${loginUser.truename}
+                        ,<a href="login!loginOff.do">注销</a>
                     </div>
                 </td>
             </tr>
@@ -80,7 +81,14 @@
 </div>
 <div region="center" border="false">
     <div id="tt" class="easyui-tabs" fit="true" border="false" plain="true">
-        <div title="Welcome" fit="true">
+        <div title="Welcome" fit="true" style="padding: 10px;">
+            <div id="p" class="easyui-panel" title="工单签收"
+                 style="width:500px;height:150px;padding:10px;background:#fafafa;"
+                 data-options="iconCls:'icon-save',closable:true,
+                collapsible:true,minimizable:true,maximizable:true">
+                <p>panel content.</p>
+                <p>panel content.</p>
+            </div>
         </div>
     </div>
 </div>

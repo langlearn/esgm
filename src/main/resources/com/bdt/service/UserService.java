@@ -27,4 +27,6 @@ public interface UserService {
     List<ViewUser> queryForSponsor();
 
     List<ViewUser> queryForAccept();
+
+    List<ViewUser> queryAll();
 }

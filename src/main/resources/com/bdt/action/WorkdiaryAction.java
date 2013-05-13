@@ -67,7 +67,7 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
         order.setAcceptStatus((byte) 1);
         order.setConfirmStatus((byte) 0);
         order.setAcceptUserId(optid);
-        List<ViewWorkOrder> result = workOrderService.queryByList(order);
+        List<ViewWorkOrder> result = null;
         responseUtil.writeJson(response, result);
     }
 

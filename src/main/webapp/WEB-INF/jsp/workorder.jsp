@@ -81,6 +81,113 @@
                 }
             });
 
+            //确认
+            $('#confirm_ff').form({
+                success:function(data){
+                    $('#confirm_win').window('close');
+                    $('#grid').datagrid('reload');
+                }
+            })
+            $('#btn-confirm').click(function(){
+                var res=$('#grid').datagrid('getSelections');
+                if(res.length==1){
+                    $('#confirm_ff').form('load',res[0]);
+                    $('#confirm_workOrderContent').html(res[0].workOrderContent);
+                    $('#confirm_win').window('open');
+                }else{
+                    $.messager.alert('系统提示','请选中一条!');
+                }
+            });
+
+            //验收
+            $('#check_ff').form({
+                success:function(data){
+                    $('#check_win').window('close');
+                    $('#grid').datagrid('reload');
+                }
+            })
+            $('#btn-check').click(function(){
+                var res=$('#grid').datagrid('getSelections');
+                if(res.length==1){
+                    $('#check_ff').form('load',res[0]);
+                    $('#check_workOrderContent').html(res[0].workOrderContent);
+                    $('#check_win').window('open');
+                }else{
+                    $.messager.alert('系统提示','请选中一条!');
+                }
+            });
+
+            //作废
+            $('#invalid_ff').form({
+                success:function(data){
+                    $('#invalid_win').window('close');
+                    $('#grid').datagrid('reload');
+                }
+            })
+            $('#btn-invalid').click(function(){
+                var res=$('#grid').datagrid('getSelections');
+                if(res.length==1){
+                    $('#invalid_ff').form('load',res[0]);
+                    $('#invalid_workOrderContent').html(res[0].workOrderContent);
+                    $('#invalid_win').window('open');
+                }else{
+                    $.messager.alert('系统提示','请选中一条!');
+                }
+            });
+
+            //受理
+            $('#userTree_btn_ok').click(function(){
+                var nodes = userTree.getCheckedNodes(true);
+                var names=[];
+                var ids=[];
+                for(var i=0;i<nodes.length;i++){
+                    var node=nodes[i];
+                    names.push(node.username);
+                    ids.push(node.userId);
+                }
+                $('#accept_ff :input[name="userids"]').val(ids.join(","));
+                $('#accept_ff :input[name="usernames"]').val(names.join(","));
+                $('#select_user_win').window('close');
+            });
+
+            $('#selectUser_btn').click(function(){
+                $('#select_user_win').window('open');
+            });
+
+            $('#accept_ff').form({
+                success:function(data){
+                    $('#accept_win').window('close');
+                    $('#grid').datagrid('reload');
+                }
+            })
+            $('#btn-accept').click(function(){
+                var res=$('#grid').datagrid('getSelections');
+                if(res.length==1){
+                    userTree.checkAllNodes(false);
+                    $('#accept_ff').form('load',res[0]);
+                    $('#accept_workOrderContent').html(res[0].workOrderContent);
+                    $.getJSON('workorder!queryCopy.do',{
+                        woId:res[0].woId
+                    },function(data){
+                        var names=[];
+                        var ids=[];
+                        for(var i=0;i<data.length;i++){
+                            var node=data[i];
+                            names.push(node.username);
+                            ids.push(node.userid);
+                            var no=userTree.getNodeByParam("userId", node.userid, null);
+                            userTree.checkNode(no);
+                        }
+                        $('#accept_ff :input[name="userids"]').val(ids.join(","));
+                        $('#accept_ff :input[name="usernames"]').val(names.join(","));
+                        $('#accept_win').window('open');
+                    });
+
+                }else{
+                    $.messager.alert('系统提示','请选中一条!');
+                }
+            });
+
             //删除
             $('#btn-delete').click(function(){
                 var res=$('#grid').datagrid('getSelections');
@@ -127,6 +234,21 @@
             var zNodes =${projects};
             var ztree=$.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
+            var userTree=$.fn.zTree.init($("#userTree"), {
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "userId"
+                    },
+                    key: {
+                        name: "username"
+                    }
+                },
+                check: {
+                    enable: true
+                }
+            }, ${users});
+
             $('#select_project_btn').click(function(){
                 $('#select_project_win').window('open');
             });
@@ -155,6 +277,11 @@
            url:'workorder!query.do',
            fitColumns:true,
            pagination:true,
+           onDblClickRow:function(rowIndex, rowData){
+               $('#view_win').window('open');
+               $('#view_ff').form('load',rowData);
+               $('#view_workOrderContent').html(rowData.workOrderContent);
+           },
            toolbar:'#tb',
            title:'工单管理'">
         <thead>
@@ -181,18 +308,18 @@
         </div>
         <%--操作--%>
         <div>
-            <%--<c:if test="${sessionScope.loginUser.isAbleWorkOrderReport==1}">--%>
+            <c:if test="${sessionScope.loginUser.isAbleWorkOrderReport==1}">
             <a class="easyui-linkbutton" id="btn-add"  plain="true">新增</a>
             <a class="easyui-linkbutton" id="btn-modify"  plain="true">修改</a>
             <a class="easyui-linkbutton" id="btn-delete" plain="true">删除</a>
-            <%--</c:if>--%>
+            </c:if>
             <c:if test="${sessionScope.loginUser.isAbleWorkOrderSponsor==1}">
-            <a class="easyui-linkbutton" plain="true">确认</a>
-            <a class="easyui-linkbutton" plain="true">验收</a>
-            <a class="easyui-linkbutton" plain="true">作废</a>
+            <a class="easyui-linkbutton" id="btn-confirm" plain="true">确认</a>
+            <a class="easyui-linkbutton" id="btn-check" plain="true">验收</a>
+            <a class="easyui-linkbutton" id="btn-invalid" plain="true">作废</a>
             </c:if>
             <c:if test="${sessionScope.loginUser.isAbleWorkOrderAccept==1}">
-            <a class="easyui-linkbutton" plain="true">受理</a>
+            <a class="easyui-linkbutton" id="btn-accept" plain="true">受理</a>
             </c:if>
         </div>
     </div>
@@ -283,8 +410,8 @@
         </div>
     </form>
 </div>
-<div id="view_win" class="easyui-window" <%--data-options="closed:true"--%> title="详情" style="padding:5px;">
-    <form id="view_ff" action="workorder!modify.do" method="post" style="padding:5px;width: 800px;height: 500px;">
+<div id="view_win" class="easyui-window" data-options="closed:true" title="详情" style="padding:5px;">
+    <form id="view_ff" action="workorder!modify.do" method="post" style="padding:5px;width: 500px;height: 500px;">
         <table>
             <tr>
                 <td>工单标题:</td>
@@ -330,21 +457,31 @@
             <tr>
                 <td>是否确认:</td>
                 <td>
-                    <input type="text" name="projectName" style="border: 0px;"/>
+                    <select name="confirmStatus" style="border: 0px;-webkit-appearance: none;">
+                        <option value="1">为确认</option>
+                        <option value="0">已确认</option>
+                    </select>
                     确认时间:<input type="text" name="confirmTime" style="border: 0px;"/>
                 </td>
             </tr>
             <tr>
                 <td>是否受理:</td>
                 <td>
-                    <input type="text" name="projectName" style="border: 0px;"/>
+                    <select name="acceptStatus" style="border: 0px;-webkit-appearance: none;">
+                        <option value="1">未受理</option>
+                        <option value="0">已受理</option>
+                    </select>
                     受理时间:<input type="text" name="acceptTime" style="border: 0px;"/>
                 </td>
             </tr>
             <tr>
                 <td>是否验收:</td>
                 <td>
-                    <input name="reportUser" type="text" style="border: 0px;"/>
+                    <select name="checkReceiveStatus" style="border: 0px;-webkit-appearance: none;">
+                        <option value="0">未验收</option>
+                        <option value="1">已验收</option>
+                        <option value="1">已作废</option>
+                    </select>
                     验收时间:
                     <input name="checkReceiveTime" type="text" style="border: 0px;"/>
                 </td>
@@ -352,21 +489,25 @@
             <tr>
                 <td>是否作废:</td>
                 <td>
-                    <input name="sponsorUser" type="text" style="border: 0px;"/>
+                    <select name="checkReceiveStatus" style="border: 0px;-webkit-appearance: none;">
+                        <option value="0">未验收</option>
+                        <option value="1">已验收</option>
+                        <option value="1">已作废</option>
+                    </select>
                     作废时间:
-                    <input name="acceptUser" type="text" style="border: 0px;"/>
+                    <input name="checkReceiveTime" type="text" style="border: 0px;"/>
                 </td>
             </tr>
             <tr>
                 <td>作废理由:</td>
                 <td>
-                    <input name="acceptUser" type="text" style="border: 0px;"/>
+                    <input name="invalidReason" type="text" style="border: 0px;"/>
                 </td>
             </tr>
             <tr>
                 <td>工单内容:</td>
                 <td>
-                    <input name="" type="text" style="border: 0px;"/>
+                    <div id="view_workOrderContent"></div>
                 </td>
             </tr>
         </table>
@@ -375,6 +516,225 @@
 <div id="select_project_win" class="easyui-window" data-options="closed:true" title="选择项目" style="width: 300px;height: 300px;">
     <ul id="treeDemo" class="ztree" style="height: 200px;overflow:auto"></ul>
     <button id="select_project_btn_ok">确定</button><button id="select_project_btn_cancle">取消</button>
+</div>
+<div id="confirm_win" class="easyui-window" data-options="closed:true" title="确认工单" style="width: 550px;height: 500px;">
+    <form id="confirm_ff" action="workorder!confirm.do" method="post" style="padding:5px;width: 500px;height: 400px;">
+        <div style="height: 400px;">
+        <table>
+            <tr>
+                <td>工单标题:</td>
+                <td>
+                    <input type="hidden" name="woId">
+                    <input name="workOrderTitle" type="text" style="border: 0px;">
+                </td>
+            </tr>
+            <tr>
+                <td>项目:</td>
+                <td>
+                    <input type="text" name="projectName" style="border: 0px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>填报人:</td>
+                <td>
+                    <input name="reportUser" type="text" style="border: 0px;"/>
+                    填报时间:
+                    <input name="reportTime" type="text" style="border: 0px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>发起人:</td>
+                <td>
+                    <input name="sponsorUser" type="text" style="border: 0px;"/>
+                    受理人:
+                    <input name="acceptUser" type="text" style="border: 0px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>工单内容:</td>
+                <td>
+                    <div id="confirm_workOrderContent"></div>
+                </td>
+            </tr>
+        </table>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit">确人</button>
+        </div>
+    </form>
+</div>
+<div id="accept_win" class="easyui-window" data-options="closed:true" title="受理工单" style="width: 550px;height: 500px;">
+    <form id="accept_ff" action="workorder!accept.do" method="post" style="padding:5px;width: 500px;height: 400px;">
+        <div style="height: 400px;">
+            <table>
+                <tr>
+                    <td>工单标题:</td>
+                    <td>
+                        <input type="hidden" name="woId">
+                        <input name="workOrderTitle" type="text" style="border: 0px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>项目:</td>
+                    <td>
+                        <input type="text" name="projectName" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>填报人:</td>
+                    <td>
+                        <input name="reportUser" type="text" style="border: 0px;"/>
+                        填报时间:
+                        <input name="reportTime" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>发起人:</td>
+                    <td>
+                        <input name="sponsorUser" type="text" style="border: 0px;"/>
+                        受理人:
+                        <input name="acceptUser" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>工单内容:</td>
+                    <td>
+                        <div id="accept_workOrderContent"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>抄送人:</td>
+                    <td>
+                        <input type="hidden" name="userids">
+                        <textarea disabled="disabled" name="usernames"></textarea>
+                        <button type="button" id="selectUser_btn">选择抄送人...</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit">确人</button>
+        </div>
+    </form>
+</div>
+<div id="select_user_win" class="easyui-window" data-options="closed:true" title="选择用户" style="width: 300px;height: 300px;">
+    <ul id="userTree" class="ztree" style="height: 200px;overflow:auto"></ul>
+    <div style="text-align: center;">
+        <button id="userTree_btn_ok">确定</button>
+    </div>
+
+</div>
+<div id="check_win" class="easyui-window" data-options="closed:true" title="验收工单" style="width: 550px;height: 500px;">
+    <form id="check_ff" action="workorder!check.do" method="post" style="padding:5px;width: 500px;height: 400px;">
+        <div style="height: 400px;">
+            <table>
+                <tr>
+                    <td>工单标题:</td>
+                    <td>
+                        <input type="hidden" name="woId">
+                        <input name="workOrderTitle" type="text" style="border: 0px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>项目:</td>
+                    <td>
+                        <input type="text" name="projectName" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>填报人:</td>
+                    <td>
+                        <input name="reportUser" type="text" style="border: 0px;"/>
+                        填报时间:
+                        <input name="reportTime" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>发起人:</td>
+                    <td>
+                        <input name="sponsorUser" type="text" style="border: 0px;"/>
+                        受理人:
+                        <input name="acceptUser" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <%--<tr>
+                    <td>确认时间:</td>
+                    <td>
+                    <input type="text" name="confirmTime" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>受理时间:</td>
+                    <td>
+                        <input type="text" name="acceptTime" style="border: 0px;"/>
+                    </td>
+                </tr>--%>
+                <tr>
+                    <td>工单内容:</td>
+                    <td>
+                        <div id="check_workOrderContent"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit">验收</button>
+        </div>
+    </form>
+</div>
+<div id="invalid_win" class="easyui-window" data-options="closed:true" title="验收工单" style="width: 550px;height: 500px;">
+    <form id="invalid_ff" action="workorder!invalid.do" method="post" style="padding:5px;width: 500px;height: 400px;">
+        <div style="height: 400px;">
+            <table>
+                <tr>
+                    <td>工单标题:</td>
+                    <td>
+                        <input type="hidden" name="woId">
+                        <input name="workOrderTitle" type="text" style="border: 0px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>项目:</td>
+                    <td>
+                        <input type="text" name="projectName" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>填报人:</td>
+                    <td>
+                        <input name="reportUser" type="text" style="border: 0px;"/>
+                        填报时间:
+                        <input name="reportTime" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>发起人:</td>
+                    <td>
+                        <input name="sponsorUser" type="text" style="border: 0px;"/>
+                        受理人:
+                        <input name="acceptUser" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>工单内容:</td>
+                    <td>
+                        <div id="invalid_workOrderContent"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>作废理由:</td>
+                    <td>
+                        <textarea name="invalidReason">
+
+                        </textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit">作废</button>
+        </div>
+    </form>
 </div>
 </body>
 </html>

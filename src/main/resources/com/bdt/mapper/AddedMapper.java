@@ -1,5 +1,7 @@
 package com.bdt.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,4 +14,6 @@ import java.util.Map;
  */
 public interface AddedMapper {
     List<Map> selectProject();
+
+    List<Map> selectWorkOrderCopy(@Param("woId") Integer woId);
 }

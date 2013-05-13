@@ -4,6 +4,9 @@ import com.bdt.bean.ViewWorkOrder;
 import com.bdt.bean.WorkOrder;
 import com.bdt.common.bean.Page;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Yang
@@ -18,8 +21,15 @@ public interface WorkOrderService {
 
     void delete(String rids);
 
-    void copy(Integer woId, String userids);
-
     Page<ViewWorkOrder> queryByPage(ViewWorkOrder model, Integer start, Integer limit);
 
+    void confirm(Integer woId);
+
+    void check(Integer woId);
+
+    void accept(Integer woId, String userids);
+
+    void invalid(Integer woId, String invalidReason);
+
+    List<Map> queryCopy(Integer woId);
 }

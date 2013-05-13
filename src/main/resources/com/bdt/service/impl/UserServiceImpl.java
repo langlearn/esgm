@@ -92,4 +92,9 @@ public class UserServiceImpl implements UserService {
         criteria.andIsAbleWorkOrderAcceptEqualTo(new Byte("1"));
         return viewUserMapper.selectByExample(example);
     }
+
+    @Override
+    public List<ViewUser> queryAll(){
+        return viewUserMapper.selectByExample(null);
+    }
 }
