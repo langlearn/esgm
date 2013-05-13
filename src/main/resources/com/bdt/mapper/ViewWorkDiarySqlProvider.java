@@ -27,6 +27,7 @@ public class ViewWorkDiarySqlProvider {
         }
         SELECT("user_name");
         SELECT("department");
+        SELECT("is_public_work_diary");
         SELECT("work_time");
         SELECT("total_hour");
         FROM("view_JEHR_work_diary");

@@ -38,6 +38,10 @@
 
             //添加
             $('#btn-add').bind('click', function () {
+                var re = $('#grid-west').datagrid('getSelected');
+                if (null == re) {
+                    return;
+                }
                 $('#add-form').form('reset');
                 $('#add-win').window('open');
             });

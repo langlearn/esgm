@@ -81,11 +81,16 @@ public class WorkDiaryServiceImpl implements WorkDiaryService {
         } else {
             criteria.andWorkTimeIsNotNull();
         }
+
+        //公开权限
+        criteria.andIsPublicWorkDiaryEqualTo((byte) 1);
+
+        example.or().andUserIdEqualTo(model.getUserId());
         int count = viewWorkDiaryMapper.countByExample(example);
         example.setOrderByClause("work_time DESC");
-        List<ViewWorkDiary> WorkDiarys = viewWorkDiaryMapper.selectByExample(example, page.createRowBounds());
+        List<ViewWorkDiary> workDiarys = viewWorkDiaryMapper.selectByExample(example, page.createRowBounds());
         page.setTotal(count);
-        page.setRoot(WorkDiarys);
+        page.setRoot(workDiarys);
         return page;
     }
 

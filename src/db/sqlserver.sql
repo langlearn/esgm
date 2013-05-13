@@ -175,11 +175,11 @@ left join dbo.JEHR_project on dbo.JEHR_work_order.project_id=dbo.JEHR_project.p_
 --修改view_JEHR_work_diary 添加部门字段
 drop view view_JEHR_work_diary;
 create view view_JEHR_work_diary as
-SELECT a.ID AS user_id, a.UserName AS user_name, a.Department department,b.work_time, SUM(b.work_hour)
+SELECT a.user_id, a.UserName AS user_name, a.Department department,a.is_public_work_diary,b.work_time, SUM(b.work_hour)
       AS total_hour
-FROM dbo.view_JEHR_ERPUser a LEFT OUTER JOIN
-      dbo.JEHR_work_diary b ON a.ID = b.user_id
-GROUP BY a.ID, a.UserName,a.Department,b.work_time;
+FROM dbo.view_JEHR_user a LEFT OUTER JOIN
+      dbo.JEHR_work_diary b ON a.user_id = b.user_id
+GROUP BY a.user_id, a.UserName,a.is_public_work_diary,a.Department,b.work_time;
 
 /* ******************************************************************************************************************* */
 --2013-05-12

@@ -9,6 +9,7 @@ import com.bdt.service.WorkOrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
     private DataDictionaryService dataDictionaryService;
 
     public void add() {
+        model.setReportTime(new Date());
         model.setUserId(optid);
         workDiaryService.add(model);
         responseUtil.writeSuccess(response);
@@ -50,6 +52,7 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
     }
 
     public void query() {
+        model.setUserId(optid);
         Page<ViewWorkDiary> result = workDiaryService.queryViewByPage(model, start, limit);
         responseUtil.writeJson(response, result);
     }

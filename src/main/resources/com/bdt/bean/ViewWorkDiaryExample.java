@@ -306,6 +306,66 @@ public class ViewWorkDiaryExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsPublicWorkDiaryIsNull() {
+            addCriterion("is_public_work_diary is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryIsNotNull() {
+            addCriterion("is_public_work_diary is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryEqualTo(Byte value) {
+            addCriterion("is_public_work_diary =", value, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryNotEqualTo(Byte value) {
+            addCriterion("is_public_work_diary <>", value, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryGreaterThan(Byte value) {
+            addCriterion("is_public_work_diary >", value, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryGreaterThanOrEqualTo(Byte value) {
+            addCriterion("is_public_work_diary >=", value, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryLessThan(Byte value) {
+            addCriterion("is_public_work_diary <", value, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryLessThanOrEqualTo(Byte value) {
+            addCriterion("is_public_work_diary <=", value, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryIn(List<Byte> values) {
+            addCriterion("is_public_work_diary in", values, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryNotIn(List<Byte> values) {
+            addCriterion("is_public_work_diary not in", values, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryBetween(Byte value1, Byte value2) {
+            addCriterion("is_public_work_diary between", value1, value2, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPublicWorkDiaryNotBetween(Byte value1, Byte value2) {
+            addCriterion("is_public_work_diary not between", value1, value2, "isPublicWorkDiary");
+            return (Criteria) this;
+        }
+
         public Criteria andWorkTimeIsNull() {
             addCriterion("work_time is null");
             return (Criteria) this;

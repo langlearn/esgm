@@ -12,6 +12,8 @@ public class ViewWorkDiary {
 
     private String department;
 
+    private Byte isPublicWorkDiary;
+
     private Date workTime;
 
     private BigDecimal totalHour;
@@ -38,6 +40,14 @@ public class ViewWorkDiary {
 
     public void setDepartment(String department) {
         this.department = department == null ? null : department.trim();
+    }
+
+    public Byte getIsPublicWorkDiary() {
+        return isPublicWorkDiary;
+    }
+
+    public void setIsPublicWorkDiary(Byte isPublicWorkDiary) {
+        this.isPublicWorkDiary = isPublicWorkDiary;
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")

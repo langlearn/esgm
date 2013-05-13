@@ -19,6 +19,7 @@ public interface ViewWorkDiaryMapper {
             @Result(column = "user_id", property = "userId", jdbcType = JdbcType.INTEGER),
             @Result(column = "user_name", property = "userName", jdbcType = JdbcType.VARCHAR),
             @Result(column = "department", property = "department", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "is_public_work_diary", property = "isPublicWorkDiary", jdbcType = JdbcType.TINYINT),
             @Result(column = "work_time", property = "workTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "total_hour", property = "totalHour", jdbcType = JdbcType.DECIMAL)
     })
