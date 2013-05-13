@@ -1,24 +1,14 @@
 package com.bdt.mapper;
 
-import static org.apache.ibatis.jdbc.SqlBuilder.BEGIN;
-import static org.apache.ibatis.jdbc.SqlBuilder.DELETE_FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.FROM;
-import static org.apache.ibatis.jdbc.SqlBuilder.INSERT_INTO;
-import static org.apache.ibatis.jdbc.SqlBuilder.ORDER_BY;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SELECT_DISTINCT;
-import static org.apache.ibatis.jdbc.SqlBuilder.SET;
-import static org.apache.ibatis.jdbc.SqlBuilder.SQL;
-import static org.apache.ibatis.jdbc.SqlBuilder.UPDATE;
-import static org.apache.ibatis.jdbc.SqlBuilder.VALUES;
-import static org.apache.ibatis.jdbc.SqlBuilder.WHERE;
-
 import com.bdt.bean.Project;
+import com.bdt.bean.ProjectExample;
 import com.bdt.bean.ProjectExample.Criteria;
 import com.bdt.bean.ProjectExample.Criterion;
-import com.bdt.bean.ProjectExample;
+
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.ibatis.jdbc.SqlBuilder.*;
 
 public class ProjectSqlProvider {
 
@@ -40,23 +30,23 @@ public class ProjectSqlProvider {
     public String insertSelective(Project record) {
         BEGIN();
         INSERT_INTO("JEHR_project");
-        
+
         if (record.getBusinessTypeId() != null) {
             VALUES("business_type_id", "#{businessTypeId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getProjectName() != null) {
             VALUES("project_name", "#{projectName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getRemark() != null) {
             VALUES("remark", "#{remark,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getBusinessTypeCode() != null) {
             VALUES("business_type_code", "#{businessTypeCode,jdbcType=VARCHAR}");
         }
-        
+
         return SQL();
     }
 
@@ -73,41 +63,41 @@ public class ProjectSqlProvider {
         SELECT("business_type_code");
         FROM("JEHR_project");
         applyWhere(example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             ORDER_BY(example.getOrderByClause());
         }
-        
+
         return SQL();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         Project record = (Project) parameter.get("record");
         ProjectExample example = (ProjectExample) parameter.get("example");
-        
+
         BEGIN();
         UPDATE("JEHR_project");
-        
+
         if (record.getpId() != null) {
             SET("p_id = #{record.pId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getBusinessTypeId() != null) {
             SET("business_type_id = #{record.businessTypeId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getProjectName() != null) {
             SET("project_name = #{record.projectName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getRemark() != null) {
             SET("remark = #{record.remark,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getBusinessTypeCode() != null) {
             SET("business_type_code = #{record.businessTypeCode,jdbcType=VARCHAR}");
         }
-        
+
         applyWhere(example, true);
         return SQL();
     }
@@ -115,13 +105,13 @@ public class ProjectSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         BEGIN();
         UPDATE("JEHR_project");
-        
+
         SET("p_id = #{record.pId,jdbcType=INTEGER}");
         SET("business_type_id = #{record.businessTypeId,jdbcType=INTEGER}");
         SET("project_name = #{record.projectName,jdbcType=VARCHAR}");
         SET("remark = #{record.remark,jdbcType=VARCHAR}");
         SET("business_type_code = #{record.businessTypeCode,jdbcType=VARCHAR}");
-        
+
         ProjectExample example = (ProjectExample) parameter.get("example");
         applyWhere(example, true);
         return SQL();
@@ -130,25 +120,25 @@ public class ProjectSqlProvider {
     public String updateByPrimaryKeySelective(Project record) {
         BEGIN();
         UPDATE("JEHR_project");
-        
+
         if (record.getBusinessTypeId() != null) {
             SET("business_type_id = #{businessTypeId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getProjectName() != null) {
             SET("project_name = #{projectName,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getRemark() != null) {
             SET("remark = #{remark,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getBusinessTypeCode() != null) {
             SET("business_type_code = #{businessTypeCode,jdbcType=VARCHAR}");
         }
-        
+
         WHERE("p_id = #{pId,jdbcType=INTEGER}");
-        
+
         return SQL();
     }
 
@@ -156,7 +146,7 @@ public class ProjectSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -178,7 +168,7 @@ public class ProjectSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -190,7 +180,7 @@ public class ProjectSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -201,14 +191,14 @@ public class ProjectSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -239,7 +229,7 @@ public class ProjectSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             WHERE(sb.toString());
         }

@@ -17,38 +17,38 @@
     <%--<script type="text/javascript" src="jquery-easyui/1.3.3/easyui-lang-zh_CN.js"></script>--%>
     <%--<script type="text/javascript" src="ztree/js/jquery.ztree.core-3.5.min.js"></script>--%>
     <script type="text/javascript">
-        $(function(){
+        $(function () {
             var setting = {
                 data: {
                     simpleData: {
                         enable: true
                     }
                 },
-                callback:{
-                    onClick:function(event, treeId, treeNode){
-                        if ($('#tt').tabs('exists',treeNode.name)){
+                callback: {
+                    onClick: function (event, treeId, treeNode) {
+                        if ($('#tt').tabs('exists', treeNode.name)) {
                             $('#tt').tabs('select', treeNode.name);
                         } else {
-                            $('#tt').tabs('add',{
-                                title:treeNode.name,
-                                content:'<iframe src="'+treeNode.src+'" style="height: 100%;width: 100%;border: 0px;"></iframe>',
-                                closable:true
+                            $('#tt').tabs('add', {
+                                title: treeNode.name,
+                                content: '<iframe src="' + treeNode.src + '" style="height: 100%;width: 100%;border: 0px;"></iframe>',
+                                closable: true
                             });
                         }
                     }
                 }
             };
 
-            var zNodes =[
-                { id:1, pId:0, name:"项目管理", src:"project.do"},
-                { id:7, pId:0, name:"工单管理", src:"workorder.do"},
-                { id:2, pId:0, name:"基础数据", src:"baseinfo.do"},
-                { id:4, pId:0, name:"工作日志", src:"workdiary.do"},
-                { id:5, pId:0, name:"数据字典", src:"datadictionary.do"},
-                { id:6, pId:0, name:"角色权限", src:"user.do"}
+            var zNodes = [
+                { id: 1, pId: 0, name: "项目管理", src: "project.do"},
+                { id: 7, pId: 0, name: "工单管理", src: "workorder.do"},
+                { id: 2, pId: 0, name: "基础数据", src: "baseinfo.do"},
+                { id: 4, pId: 0, name: "工作日志", src: "workdiary.do"},
+                { id: 5, pId: 0, name: "数据字典", src: "datadictionary.do"},
+                { id: 6, pId: 0, name: "角色权限", src: "user.do"}
             ];
 
-            $(document).ready(function(){
+            $(document).ready(function () {
                 $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             });
         });

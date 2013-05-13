@@ -29,30 +29,30 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     private ViewWorkOrderMapper viewWorkOrderMapper;
 
     @Override
-    public void add(WorkOrder model){
+    public void add(WorkOrder model) {
         workOrderMapper.insert(model);
     }
 
     @Override
-    public void modify(WorkOrder model){
+    public void modify(WorkOrder model) {
         workOrderMapper.updateByPrimaryKeySelective(model);
     }
 
     @Override
-    public void delete(String rids){
-        List<Integer> ids= MyStrUtil.stringToListInteger(rids);
-        WorkOrderExample example=new WorkOrderExample();
-        WorkOrderExample.Criteria criteria=example.createCriteria();
+    public void delete(String rids) {
+        List<Integer> ids = MyStrUtil.stringToListInteger(rids);
+        WorkOrderExample example = new WorkOrderExample();
+        WorkOrderExample.Criteria criteria = example.createCriteria();
         criteria.andWoIdIn(ids);
         workOrderMapper.deleteByExample(example);
     }
 
     @Override
-    public void copy(Integer woId, String userids){
+    public void copy(Integer woId, String userids) {
         final Date COPY_TIME = new Date();
-        List<Integer> ids= MyStrUtil.stringToListInteger(userids);
-        for (Integer userid:ids){
-            WorkOrderCopy workOrderCopy=new WorkOrderCopy();
+        List<Integer> ids = MyStrUtil.stringToListInteger(userids);
+        for (Integer userid : ids) {
+            WorkOrderCopy workOrderCopy = new WorkOrderCopy();
             workOrderCopy.setWorkOrderId(woId);
             workOrderCopy.setCopyTime(COPY_TIME);
             workOrderCopy.setCopyUserId(userid);
@@ -61,22 +61,22 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     }
 
     @Override
-    public Page<ViewWorkOrder> queryByPage(ViewWorkOrder model, Integer start, Integer limit){
-        Page<ViewWorkOrder> page=new Page<ViewWorkOrder>(start,limit);
-        ViewWorkOrderExample example=new ViewWorkOrderExample();
-        ViewWorkOrderExample.Criteria criteria=example.createCriteria();
-        if(StringUtils.isNotBlank(model.getWorkOrderTitle()))
-            criteria.andWorkOrderTitleLike("%"+model.getWorkOrderTitle()+"%");
-        if(StringUtils.isNotBlank(model.getProjectName()))
-            criteria.andProjectNameLike("%"+model.getProjectName()+"%");
-        if(model.getAcceptStatus()!=null)
+    public Page<ViewWorkOrder> queryByPage(ViewWorkOrder model, Integer start, Integer limit) {
+        Page<ViewWorkOrder> page = new Page<ViewWorkOrder>(start, limit);
+        ViewWorkOrderExample example = new ViewWorkOrderExample();
+        ViewWorkOrderExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(model.getWorkOrderTitle()))
+            criteria.andWorkOrderTitleLike("%" + model.getWorkOrderTitle() + "%");
+        if (StringUtils.isNotBlank(model.getProjectName()))
+            criteria.andProjectNameLike("%" + model.getProjectName() + "%");
+        if (model.getAcceptStatus() != null)
             criteria.andAcceptStatusEqualTo(model.getAcceptStatus());
-        if(model.getCheckReceiveStatus()!=null)
+        if (model.getCheckReceiveStatus() != null)
             criteria.andCheckReceiveStatusEqualTo(model.getCheckReceiveStatus());
-        if(model.getConfirmStatus()!=null)
+        if (model.getConfirmStatus() != null)
             criteria.andConfirmStatusEqualTo(model.getConfirmStatus());
-        int count=viewWorkOrderMapper.countByExample(example);
-        List<ViewWorkOrder> WorkOrders=viewWorkOrderMapper.selectByExample(example,page.createRowBounds());
+        int count = viewWorkOrderMapper.countByExample(example);
+        List<ViewWorkOrder> WorkOrders = viewWorkOrderMapper.selectByExample(example, page.createRowBounds());
         page.setTotal(count);
         page.setRoot(WorkOrders);
         return page;

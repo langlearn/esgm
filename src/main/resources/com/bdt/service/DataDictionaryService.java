@@ -5,8 +5,6 @@ import com.bdt.common.bean.Page;
 
 import java.util.List;
 
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Lim

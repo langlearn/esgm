@@ -11,109 +11,109 @@
     <title></title>
     <script type="text/javascript">
         $.extend($.fn.window.defaults, {
-            collapsible:false,
-            minimizable:false,
-            maximizable:false,
-            resizable:false,
-            modal:true
+            collapsible: false,
+            minimizable: false,
+            maximizable: false,
+            resizable: false,
+            modal: true
         });
-        $.extend($.fn.datagrid.defaults,{
-            striped:true,
-            rownumbers:true
+        $.extend($.fn.datagrid.defaults, {
+            striped: true,
+            rownumbers: true
         });
-        function getRids(res,p){
-            p=p||'rid';
-            var ids=[];
-            for(var i=0;i<res.length;i++){
+        function getRids(res, p) {
+            p = p || 'rid';
+            var ids = [];
+            for (var i = 0; i < res.length; i++) {
                 ids.push(res[i][p]);
             }
             return ids.join(',');
         }
-        function getDictionaryName(dictionaryCode){
-            var data=${dataDictionaries};
-            for(var i=0;i<data.length;i++){
-                var re=data[i];
-                if(re.dictionaryCode==dictionaryCode){
+        function getDictionaryName(dictionaryCode) {
+            var data =${dataDictionaries};
+            for (var i = 0; i < data.length; i++) {
+                var re = data[i];
+                if (re.dictionaryCode == dictionaryCode) {
                     return re.dictionaryName;
                 }
             }
             return "";
         }
-        $(function(){
+        $(function () {
             //查询
-            $('#btn-query').click(function(){
-                var workOrderTitle=$('#q_workOrderTitle').val();
-                var projectName=$('#q_projectName').val();
-                $('#grid').datagrid('load',{
-                    projectName:projectName,
-                    workOrderTitle:workOrderTitle
+            $('#btn-query').click(function () {
+                var workOrderTitle = $('#q_workOrderTitle').val();
+                var projectName = $('#q_projectName').val();
+                $('#grid').datagrid('load', {
+                    projectName: projectName,
+                    workOrderTitle: workOrderTitle
                 });
             });
 
             //添加
-            $('#btn-add').bind('click', function(){
+            $('#btn-add').bind('click', function () {
                 $('#add_ff').form('reset');
                 $('#add_win').window('open');
             });
 
-            $('#btn_add_win_cancel').click(function(){
+            $('#btn_add_win_cancel').click(function () {
                 $('#add_win').window('close');
             });
-            $('#btn_add_win_ok').click(function(){
+            $('#btn_add_win_ok').click(function () {
                 $('#add_ff').submit();
             });
 
             $('#add_ff').form({
-                success:function(data){
+                success: function (data) {
                     $('#add_win').window('close');
                     $('#grid').datagrid('reload');
                 }
             });
 
             //修改
-            $('#btn-modify').bind('click', function(){
-                var res=$('#grid').datagrid('getSelections');
-                if(res.length==1){
-                    $('#modify_ff').form('load',res[0]);
+            $('#btn-modify').bind('click', function () {
+                var res = $('#grid').datagrid('getSelections');
+                if (res.length == 1) {
+                    $('#modify_ff').form('load', res[0]);
                     $('#modify_win').window('open');
-                }else{
-                    $.messager.alert('系统提示','请选中一条!');
+                } else {
+                    $.messager.alert('系统提示', '请选中一条!');
                 }
             });
 
-            $('#btn_modify_win_cancel').click(function(){
+            $('#btn_modify_win_cancel').click(function () {
                 $('#modify_win').window('close');
             });
-            $('#btn_modify_win_ok').click(function(){
+            $('#btn_modify_win_ok').click(function () {
                 $('#modify_ff').submit();
             });
             $('#modify_ff').form({
-                success:function(data){
+                success: function (data) {
                     $('#modify_win').window('close');
                     $('#grid').datagrid('reload');
                 }
             });
 
             //删除
-            $('#btn-delete').click(function(){
-                var res=$('#grid').datagrid('getSelections');
-                if(res.length>0){
-                    var rids=getRids(res,'pId');
-                    $.getJSON('workorder!delete.do',{rids:rids},function(){
-                        $.messager.alert('系统提示','删除成功','',function(){
+            $('#btn-delete').click(function () {
+                var res = $('#grid').datagrid('getSelections');
+                if (res.length > 0) {
+                    var rids = getRids(res, 'pId');
+                    $.getJSON('workorder!delete.do', {rids: rids}, function () {
+                        $.messager.alert('系统提示', '删除成功', '', function () {
                             $('#grid').datagrid('reload');
                         });
                     });
-                }else{
-                    $.messager.alert('系统提示','请选中一些记录!');
+                } else {
+                    $.messager.alert('系统提示', '请选中一些记录!');
                 }
             });
 
             var editor = new UE.ui.Editor({
-                initialFrameWidth:700,
-                initialFrameHeight:160,
-                minFrameHeight:160,
-                zIndex:9000
+                initialFrameWidth: 700,
+                initialFrameHeight: 160,
+                minFrameHeight: 160,
+                zIndex: 9000
             });
             editor.render("editor");
         });
@@ -153,8 +153,8 @@
         </div>
         <%--操作--%>
         <div>
-            <a class="easyui-linkbutton" id="btn-add"  plain="true">新增</a>
-            <a class="easyui-linkbutton" id="btn-modify"  plain="true">修改</a>
+            <a class="easyui-linkbutton" id="btn-add" plain="true">新增</a>
+            <a class="easyui-linkbutton" id="btn-modify" plain="true">修改</a>
             <a class="easyui-linkbutton" id="btn-delete" plain="true">删除</a>
             <a class="easyui-linkbutton" plain="true">确认</a>
             <a class="easyui-linkbutton" plain="true">受理</a>
@@ -163,7 +163,8 @@
         </div>
     </div>
 </div>
-<div id="add_win" class="easyui-window" data-options="closed:true" title="添加" style="padding:5px;width: 800px;height: 500px;">
+<div id="add_win" class="easyui-window" data-options="closed:true" title="添加"
+     style="padding:5px;width: 800px;height: 500px;">
     <form id="add_ff" action="workorder!add.do" method="post">
         <table>
             <tr>
@@ -175,19 +176,20 @@
             <tr>
                 <td>项目:</td>
                 <td>
-                    <input type="text"><button>选择项目</button>
+                    <input type="text">
+                    <button>选择项目</button>
                 </td>
             </tr>
             <tr>
                 <td>发起人:</td>
                 <td>
-                    <input type="text">        受理人:   <input type="text"/>
+                    <input type="text"> 受理人: <input type="text"/>
                 </td>
             </tr>
             <tr>
                 <td>工单内容:</td>
                 <td>
-                    <script type="text/plain" id="editor" name="myContent" >
+                    <script type="text/plain" id="editor" name="myContent">
                     </script>
                 </td>
             </tr>
@@ -212,7 +214,7 @@
 		data:${dataDictionaries},
 		onSelect: function(rec){
             $("#add_ff :input[name=\"businessTypeId\"]").val(rec.ddId);
-        }' /></td>
+        }'/></td>
             </tr>
             <tr>
                 <td>项目名称:</td>
@@ -225,8 +227,10 @@
             </tr>
         </table>
         <div data-options="border:false" style="text-align:right;">
-            <a class="easyui-linkbutton" id="btn_modify_win_ok" data-options="iconCls:'icon-ok'" href="javascript:void(0)">确定</a>
-            <a class="easyui-linkbutton" id="btn_modify_win_cancel" data-options="iconCls:'icon-cancel'" href="javascript:void(0)">取消</a>
+            <a class="easyui-linkbutton" id="btn_modify_win_ok" data-options="iconCls:'icon-ok'"
+               href="javascript:void(0)">确定</a>
+            <a class="easyui-linkbutton" id="btn_modify_win_cancel" data-options="iconCls:'icon-cancel'"
+               href="javascript:void(0)">取消</a>
         </div>
     </form>
 </div>

@@ -19,11 +19,11 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Results(
-        @Result(name="loginPage",location="/index.jsp",type="redirect")
+        @Result(name = "loginPage", location = "/index.jsp", type = "redirect")
 )
 public class LoginAction extends MyActionSupport<SysUser> {
 
-    private SysUser model=new SysUser();
+    private SysUser model = new SysUser();
 
     @Override
     public SysUser getModel() {
@@ -33,21 +33,21 @@ public class LoginAction extends MyActionSupport<SysUser> {
     @Inject
     private SysUserMapper sysUserMapper;
 
-    public void verify(){
-        SysUserExample example=new SysUserExample();
-        SysUserExample.Criteria criteria=example.createCriteria();
+    public void verify() {
+        SysUserExample example = new SysUserExample();
+        SysUserExample.Criteria criteria = example.createCriteria();
         criteria.andUsernameEqualTo(model.getUsername());
-        List<SysUser> sysUsers=sysUserMapper.selectByExample(example);
-        if(sysUsers.size()>0){
-            SysUser sysUser=sysUsers.get(0);
-            if(MD5Util.getMD5Str(model.getUserpwd()).equals(sysUser.getUserpwd())){
-                session.put("optid",sysUser.getId());
+        List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+        if (sysUsers.size() > 0) {
+            SysUser sysUser = sysUsers.get(0);
+            if (MD5Util.getMD5Str(model.getUserpwd()).equals(sysUser.getUserpwd())) {
+                session.put("optid", sysUser.getId());
                 responseUtil.writeSuccess(response);
-            }else {
-                responseUtil.writeFailAndError(response,"密码错误，请重新输入!");
+            } else {
+                responseUtil.writeFailAndError(response, "密码错误，请重新输入!");
             }
-        }else {
-            responseUtil.writeFailAndError(response,"该用户不存在!");
+        } else {
+            responseUtil.writeFailAndError(response, "该用户不存在!");
         }
     }
 

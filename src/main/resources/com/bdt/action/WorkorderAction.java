@@ -1,7 +1,6 @@
 package com.bdt.action;
 
 import com.bdt.bean.DataDictionary;
-import com.bdt.bean.Project;
 import com.bdt.bean.ViewWorkOrder;
 import com.bdt.bean.WorkOrder;
 import com.bdt.common.base.MyActionSupport;
@@ -23,7 +22,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class WorkorderAction extends MyActionSupport<WorkOrder> {
-    private WorkOrder model=new WorkOrder();
+    private WorkOrder model = new WorkOrder();
 
     @Override
     public WorkOrder getModel() {
@@ -35,33 +34,33 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
     @Inject
     private DataDictionaryService dataDictionaryService;
 
-    public void add(){
+    public void add() {
         service.add(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void modify(){
+    public void modify() {
         service.modify(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void delete(){
-        String rids=request.getParameter("rids");
+    public void delete() {
+        String rids = request.getParameter("rids");
         service.delete(rids);
         responseUtil.writeSuccess(response);
     }
 
     public void query() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        ViewWorkOrder viewWorkOrder=new ViewWorkOrder();
-        PropertyUtils.copyProperties(viewWorkOrder,model);
+        ViewWorkOrder viewWorkOrder = new ViewWorkOrder();
+        PropertyUtils.copyProperties(viewWorkOrder, model);
         viewWorkOrder.setProjectName(request.getParameter("projectName"));
-        Page<ViewWorkOrder> result= service.queryByPage(viewWorkOrder, start, limit);
-        responseUtil.writeJson(response,result);
+        Page<ViewWorkOrder> result = service.queryByPage(viewWorkOrder, start, limit);
+        responseUtil.writeJson(response, result);
     }
 
     public String execute() throws JsonProcessingException {
-        List<DataDictionary> dataDictionaries=dataDictionaryService.queryByParentCode("001");
-        request.setAttribute("dataDictionaries",objectMapper.writeValueAsString(dataDictionaries));
+        List<DataDictionary> dataDictionaries = dataDictionaryService.queryByParentCode("001");
+        request.setAttribute("dataDictionaries", objectMapper.writeValueAsString(dataDictionaries));
         return SUCCESS;
     }
 }

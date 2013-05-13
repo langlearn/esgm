@@ -27,7 +27,7 @@
     <sitemesh:head/>
 </head>
 
-<body <sitemesh:getProperty property="body.class" writeEntireProperty="true" />>
+<body <sitemesh:getProperty property="body.class" writeEntireProperty="true"/>>
 <sitemesh:body/>
 </body>
 </html>
