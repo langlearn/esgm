@@ -4,6 +4,8 @@ import com.bdt.bean.User;
 import com.bdt.bean.ViewUser;
 import com.bdt.common.bean.Page;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Lim
@@ -21,4 +23,8 @@ public interface UserService {
     void delete(String rids);
 
     Page<ViewUser> queryByPage(User model, Integer start, Integer limit);
+
+    List<ViewUser> queryForSponsor();
+
+    List<ViewUser> queryForAccept();
 }

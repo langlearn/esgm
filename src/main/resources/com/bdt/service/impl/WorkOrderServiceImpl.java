@@ -76,9 +76,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         if(model.getConfirmStatus()!=null)
             criteria.andConfirmStatusEqualTo(model.getConfirmStatus());
         int count=viewWorkOrderMapper.countByExample(example);
-        List<ViewWorkOrder> WorkOrders=viewWorkOrderMapper.selectByExample(example,page.createRowBounds());
+        List<ViewWorkOrder> viewWorkOrders=viewWorkOrderMapper.selectByExampleWithBLOBs(example,page.createRowBounds());
         page.setTotal(count);
-        page.setRoot(WorkOrders);
+        page.setRoot(viewWorkOrders);
         return page;
     }
 }

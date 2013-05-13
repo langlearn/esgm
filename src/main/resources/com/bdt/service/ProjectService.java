@@ -3,6 +3,9 @@ package com.bdt.service;
 import com.bdt.bean.Project;
 import com.bdt.common.bean.Page;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Yang
@@ -18,4 +21,6 @@ public interface ProjectService {
     void delete(String rids);
 
     Page<Project> queryByPage(Project model, Integer start, Integer limit);
+
+    List<Map> queryProjectTree();
 }

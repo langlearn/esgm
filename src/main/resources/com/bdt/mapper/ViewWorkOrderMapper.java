@@ -2,12 +2,13 @@ package com.bdt.mapper;
 
 import com.bdt.bean.ViewWorkOrder;
 import com.bdt.bean.ViewWorkOrderExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
+
+import java.util.List;
 
 public interface ViewWorkOrderMapper {
     @SelectProvider(type=ViewWorkOrderSqlProvider.class, method="countByExample")
@@ -36,7 +37,7 @@ public interface ViewWorkOrderMapper {
         @Result(column="sponsor_user", property="sponsorUser", jdbcType=JdbcType.VARCHAR),
         @Result(column="accept_user", property="acceptUser", jdbcType=JdbcType.VARCHAR),
         @Result(column="project_name", property="projectName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="work_order_content", property="workOrderContent", jdbcType=JdbcType.CLOB)
+        @Result(column="work_order_content", property="workOrderContent", jdbcType=JdbcType.LONGVARCHAR)
     })
     List<ViewWorkOrder> selectByExampleWithBLOBs(ViewWorkOrderExample example);
 
@@ -67,4 +68,6 @@ public interface ViewWorkOrderMapper {
     List<ViewWorkOrder> selectByExample(ViewWorkOrderExample example);
 
     List<ViewWorkOrder> selectByExample(ViewWorkOrderExample example, RowBounds rowBounds);
+
+    List<ViewWorkOrder> selectByExampleWithBLOBs(ViewWorkOrderExample example, RowBounds rowBounds);
 }

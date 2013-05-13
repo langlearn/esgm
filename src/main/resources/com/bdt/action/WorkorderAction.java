@@ -1,12 +1,13 @@
 package com.bdt.action;
 
-import com.bdt.bean.DataDictionary;
-import com.bdt.bean.Project;
+import com.bdt.bean.ViewUser;
 import com.bdt.bean.ViewWorkOrder;
 import com.bdt.bean.WorkOrder;
 import com.bdt.common.base.MyActionSupport;
 import com.bdt.common.bean.Page;
 import com.bdt.service.DataDictionaryService;
+import com.bdt.service.ProjectService;
+import com.bdt.service.UserService;
 import com.bdt.service.WorkOrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -14,6 +15,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +36,10 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
     private WorkOrderService service;
     @Inject
     private DataDictionaryService dataDictionaryService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private ProjectService projectService;
 
     public void add(){
         service.add(model);
@@ -60,8 +66,12 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
     }
 
     public String execute() throws JsonProcessingException {
-        List<DataDictionary> dataDictionaries=dataDictionaryService.queryByParentCode("001");
-        request.setAttribute("dataDictionaries",objectMapper.writeValueAsString(dataDictionaries));
+        List<ViewUser> sponsors=userService.queryForSponsor();
+        List<ViewUser> accepts=userService.queryForAccept();
+        List<Map> projects=projectService.queryProjectTree();
+        request.setAttribute("sponsors",sponsors);
+        request.setAttribute("accepts",accepts);
+        request.setAttribute("projects",objectMapper.writeValueAsString(projects));
         return SUCCESS;
     }
 }

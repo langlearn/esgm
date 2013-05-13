@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <classPathEntry location="jdbc/jtds-1.3.0.jar"/>
+    <classPathEntry location="jdbc/sqljdbc4.jar"/>
 
     <context id="MysqlTables" targetRuntime="MyBatis3">
         <!-- 去除自动生成的注释 -->
@@ -12,20 +12,18 @@
             <property name="suppressAllComments" value="true" />
         </commentGenerator>
 
-        <!--
-        sqlserver
+
         <jdbcConnection
             driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-            connectionURL="jdbc:sqlserver://localhost:1433;databaseName=test;integratedSecurity=true"
+            connectionURL="jdbc:sqlserver://localhost:1433;databaseName=BDTOA;integratedSecurity=true"
             userId="sa"
             password="123456">
         </jdbcConnection>
-        -->
-        <jdbcConnection driverClass="net.sourceforge.jtds.jdbc.Driver"
+        <!--<jdbcConnection driverClass="net.sourceforge.jtds.jdbc.Driver"
                         connectionURL="jdbc:jtds:sqlserver://localhost:1433;DatabaseName=BDTOA"
                         userId="sa"
                         password="123456">
-        </jdbcConnection>
+        </jdbcConnection>-->
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
