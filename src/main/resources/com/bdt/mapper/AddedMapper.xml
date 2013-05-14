@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bdt.mapper.AddedMapper" >
+    <select id="selectProject" resultType="hashmap">
+        select CAST(p_id as varchar(20)) as id,project_name as name,business_type_code as pId,0 as [nocheck] from JEHR_project t
+        union all
+        select CAST(dictionary_code as varchar(20)) as id,dictionary_name as name,NULL as pId,1 as [nocheck] from JEHR_data_dictionary where dictionary_code in(
+        select distinct business_type_code from JEHR_project)
+    </select>
+    <select id="selectWorkOrderCopy" resultType="hashmap">
+        SELECT
+        y.[copy_user_id] as userid,
+        r.TrueName as username
+        FROM [dbo].[JEHR_work_order_copy] y
+        left join view_JEHR_ERPUser r on(y.copy_user_id=r.ID)
+        where y.work_order_id=#{woId,jdbcType=INTEGER}
+    </select>
+</mapper>

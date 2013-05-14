@@ -68,4 +68,33 @@ public class UserServiceImpl implements UserService {
         page.setRoot(Users);
         return page;
     }
+
+    /**
+     *发起人
+     * @return
+     */
+    @Override
+    public List<ViewUser> queryForSponsor(){
+        ViewUserExample example=new ViewUserExample();
+        ViewUserExample.Criteria criteria=example.createCriteria();
+        criteria.andIsAbleWorkOrderSponsorEqualTo(new Byte("1"));
+        return viewUserMapper.selectByExample(example);
+    }
+
+    /**
+     * 受理人
+     * @return
+     */
+    @Override
+    public List<ViewUser> queryForAccept(){
+        ViewUserExample example=new ViewUserExample();
+        ViewUserExample.Criteria criteria=example.createCriteria();
+        criteria.andIsAbleWorkOrderAcceptEqualTo(new Byte("1"));
+        return viewUserMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<ViewUser> queryAll(){
+        return viewUserMapper.selectByExample(null);
+    }
 }

@@ -1,18 +1,22 @@
 package com.bdt.action;
 
-import com.bdt.bean.DataDictionary;
+import com.bdt.bean.ViewUser;
 import com.bdt.bean.ViewWorkOrder;
 import com.bdt.bean.WorkOrder;
 import com.bdt.common.base.MyActionSupport;
 import com.bdt.common.bean.Page;
 import com.bdt.service.DataDictionaryService;
+import com.bdt.service.ProjectService;
+import com.bdt.service.UserService;
 import com.bdt.service.WorkOrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +26,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class WorkorderAction extends MyActionSupport<WorkOrder> {
-    private WorkOrder model = new WorkOrder();
+    private WorkOrder model=new WorkOrder();
 
     @Override
     public WorkOrder getModel() {
@@ -33,34 +37,71 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
     private WorkOrderService service;
     @Inject
     private DataDictionaryService dataDictionaryService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private ProjectService projectService;
 
-    public void add() {
+    public void add(){
+        model.setReportUserId(optid);
+        model.setReportTime(new Date());
         service.add(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void modify() {
+    public void modify(){
         service.modify(model);
         responseUtil.writeSuccess(response);
     }
 
-    public void delete() {
-        String rids = request.getParameter("rids");
+    public void delete(){
+        String rids=request.getParameter("rids");
         service.delete(rids);
         responseUtil.writeSuccess(response);
     }
 
+    public void confirm() {
+        service.confirm(model.getWoId());
+        responseUtil.writeSuccess(response);
+    }
+
+    public void accept(){
+        String userids=request.getParameter("userids");
+        service.accept(model.getWoId(),userids);
+        responseUtil.writeSuccess(response);
+    }
+    public void check(){
+        service.check(model.getWoId());
+        responseUtil.writeSuccess(response);
+    }
+
+    public void invalid(){
+        service.invalid(model.getWoId(),model.getInvalidReason());
+        responseUtil.writeSuccess(response);
+    }
+
     public void query() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        ViewWorkOrder viewWorkOrder = new ViewWorkOrder();
-        PropertyUtils.copyProperties(viewWorkOrder, model);
+        ViewWorkOrder viewWorkOrder=new ViewWorkOrder();
+        PropertyUtils.copyProperties(viewWorkOrder,model);
         viewWorkOrder.setProjectName(request.getParameter("projectName"));
-        Page<ViewWorkOrder> result = service.queryByPage(viewWorkOrder, start, limit);
-        responseUtil.writeJson(response, result);
+        Page<ViewWorkOrder> result= service.queryByPage(viewWorkOrder, start, limit);
+        responseUtil.writeJson(response,result);
+    }
+
+    public void queryCopy(){
+        List<Map> result= service.queryCopy(model.getWoId());
+        responseUtil.writeJson(response,result);
     }
 
     public String execute() throws JsonProcessingException {
-        List<DataDictionary> dataDictionaries = dataDictionaryService.queryByParentCode("001");
-        request.setAttribute("dataDictionaries", objectMapper.writeValueAsString(dataDictionaries));
+        List<ViewUser> sponsors=userService.queryForSponsor();
+        List<ViewUser> accepts=userService.queryForAccept();
+        List<Map> projects=projectService.queryProjectTree();
+        List<ViewUser> users=userService.queryAll();
+        request.setAttribute("sponsors",sponsors);
+        request.setAttribute("accepts",accepts);
+        request.setAttribute("users",objectMapper.writeValueAsString(users));
+        request.setAttribute("projects",objectMapper.writeValueAsString(projects));
         return SUCCESS;
     }
 }

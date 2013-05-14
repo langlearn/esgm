@@ -24,5 +24,4 @@ public interface WorkDiaryService {
     Page<ViewWorkDiary> queryViewByPage(WorkDiary model, Integer start, Integer limit);
 
     Page<ViewWorkDiaryDetail> queryDetailViewByPage(WorkDiary model, Integer start, Integer limit);
-
 }

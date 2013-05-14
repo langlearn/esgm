@@ -4,12 +4,14 @@ import com.bdt.bean.Project;
 import com.bdt.bean.ProjectExample;
 import com.bdt.common.bean.Page;
 import com.bdt.common.util.MyStrUtil;
+import com.bdt.mapper.AddedMapper;
 import com.bdt.mapper.ProjectMapper;
 import com.bdt.service.ProjectService;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +23,8 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
     @Inject
     private ProjectMapper projectMapper;
+    @Inject
+    private AddedMapper addedMapper;
 
     @Override
     public void add(Project model) {
@@ -56,5 +60,20 @@ public class ProjectServiceImpl implements ProjectService {
         page.setTotal(count);
         page.setRoot(projects);
         return page;
+    }
+
+    @Override
+    public List<Map> queryProjectTree(){
+        List<Map> result=addedMapper.selectProject();
+        for(Map map :result){
+            Integer val= (Integer) map.get("nocheck");
+            if(val.intValue()==0){
+                map.remove("nocheck");
+            }else{
+                map.put("nocheck",true);
+                map.put("open",true);
+            }
+        }
+        return result;
     }
 }

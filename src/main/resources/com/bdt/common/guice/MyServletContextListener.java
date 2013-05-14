@@ -21,19 +21,19 @@ public class MyServletContextListener extends GuiceServletContextListener {
 
     public Injector getInjector() {
         return Guice.createInjector(
-                new MyMapperModule(),
-                new MyServiceModule(),
-                new Struts2GuicePluginModule(),
-                new ServletModule() {
-                    @Override
-                    protected void configureServlets() {
-                        // Struts 2 setup
-                        bind(StrutsPrepareAndExecuteFilter.class).in(Singleton.class);
-                        bind(CheckLoginFilter.class).in(Singleton.class);
-                        filter("*.do").through(CheckLoginFilter.class);
-                        filter("/*").through(StrutsPrepareAndExecuteFilter.class);
-                    }
+            new MyMapperModule(),
+            new MyServiceModule(),
+            new Struts2GuicePluginModule(),
+            new ServletModule() {
+                @Override
+                protected void configureServlets() {
+                    // Struts 2 setup
+                    bind(StrutsPrepareAndExecuteFilter.class).in(Singleton.class);
+                    bind(CheckLoginFilter.class).in(Singleton.class);
+                    filter("*.do").through(CheckLoginFilter.class);
+                    filter("/*").through(StrutsPrepareAndExecuteFilter.class);
                 }
+            }
         );
     }
 
