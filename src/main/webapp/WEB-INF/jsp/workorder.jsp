@@ -41,6 +41,11 @@
                 });
             });
 
+            $('.query_btn').click(function(){
+                var param = eval('(' + $(this).attr("param") + ')');
+                $('#grid').datagrid('load',param);
+            });
+
             //添加
             $('#btn-add').bind('click', function(){
                 $('#add_ff').form('reset');
@@ -305,6 +310,17 @@
 
             项目:<input id="q_projectName" type="text"/>
             <a class="easyui-linkbutton" id="btn-query" iconCls="icon-search" plain="true"></a>
+        </div>
+        <div>
+            <a class="easyui-linkbutton query_btn"  param="{}"  plain="true">全部工单</a>
+            <a class="easyui-linkbutton query_btn" param='{confirmStatus:0}'  plain="true">待确认的工单</a>
+            <a class="easyui-linkbutton query_btn" param='{acceptStatus:0}'  plain="true">待受理的工单</a>
+            <a class="easyui-linkbutton query_btn" param="{isSignFor:0,copy:true}"  plain="true">待签收的工单</a>
+            <a class="easyui-linkbutton query_btn" param='{checkReceiveStatus:0}' plain="true">未验收的工单</a>
+            <a class="easyui-linkbutton query_btn" param='{reportUserId:${sessionScope.optid}}'  plain="true">我填报的工单</a>
+            <a class="easyui-linkbutton query_btn" param='{sponsorUserId:${sessionScope.optid}}'  plain="true">我发起的工单</a>
+            <a class="easyui-linkbutton query_btn" param='{acceptUserId:${sessionScope.optid}}'  plain="true">我受理的工单</a>
+            <a class="easyui-linkbutton query_btn" param="{isSignFor:1,copy:true}"  plain="true">我签收的工单</a>
         </div>
         <%--操作--%>
         <div>

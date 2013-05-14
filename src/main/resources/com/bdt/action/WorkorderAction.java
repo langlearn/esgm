@@ -81,11 +81,17 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
     }
 
     public void query() throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        ViewWorkOrder viewWorkOrder=new ViewWorkOrder();
-        PropertyUtils.copyProperties(viewWorkOrder,model);
-        viewWorkOrder.setProjectName(request.getParameter("projectName"));
-        Page<ViewWorkOrder> result= service.queryByPage(viewWorkOrder, start, limit);
-        responseUtil.writeJson(response,result);
+        if(request.getParameter("copy")==null){
+            ViewWorkOrder viewWorkOrder=new ViewWorkOrder();
+            PropertyUtils.copyProperties(viewWorkOrder,model);
+            viewWorkOrder.setProjectName(request.getParameter("projectName"));
+            Page<ViewWorkOrder> result= service.queryByPage(viewWorkOrder, start, limit);
+            responseUtil.writeJson(response,result);
+        }else{
+            Byte isSignFor=new Byte(request.getParameter("isSignFor"));
+            Page<ViewWorkOrder> result= service.queryCopyByPage(optid,isSignFor, start, limit);
+            responseUtil.writeJson(response,result);
+        }
     }
 
     public void queryCopy(){

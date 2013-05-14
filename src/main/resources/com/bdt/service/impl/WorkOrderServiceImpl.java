@@ -34,6 +34,9 @@ public class WorkOrderServiceImpl implements WorkOrderService {
 
     @Override
     public void add(WorkOrder model){
+        model.setAcceptStatus(new Byte("0"));
+        model.setConfirmStatus(new Byte("0"));
+        model.setCheckReceiveStatus(new Byte("0"));
         workOrderMapper.insert(model);
     }
 
@@ -79,8 +82,27 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             criteria.andCheckReceiveStatusEqualTo(model.getCheckReceiveStatus());
         if(model.getConfirmStatus()!=null)
             criteria.andConfirmStatusEqualTo(model.getConfirmStatus());
+        if(model.getAcceptUserId()!=null){
+            criteria.andAcceptUserIdEqualTo(model.getAcceptUserId());
+        }
+        if(model.getReportUserId()!=null){
+            criteria.andReportUserIdEqualTo(model.getReportUserId());
+        }
+        if(model.getSponsorUserId()!=null){
+            criteria.andSponsorUserIdEqualTo(model.getSponsorUserId());
+        }
         int count=viewWorkOrderMapper.countByExample(example);
         List<ViewWorkOrder> viewWorkOrders=viewWorkOrderMapper.selectByExampleWithBLOBs(example,page.createRowBounds());
+        page.setTotal(count);
+        page.setRoot(viewWorkOrders);
+        return page;
+    }
+
+    @Override
+    public Page<ViewWorkOrder> queryCopyByPage(Integer userId, Byte isSignFor, Integer start, Integer limit){
+        Page<ViewWorkOrder> page=new Page<ViewWorkOrder>(start,limit);
+        int count=addedMapper.countWorkOrderForCopy(userId,isSignFor);
+        List<ViewWorkOrder> viewWorkOrders=addedMapper.selectWorkOrderForCopy(userId, isSignFor, page.createRowBounds());
         page.setTotal(count);
         page.setRoot(viewWorkOrders);
         return page;
