@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.inject.Inject;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,6 @@ public class ResponseUtil {
     private final static String ERROR = "error";
     //后台验证错误使用
     private final static String ERRORS = "errors";
-    private final static String FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Inject
     private ObjectMapper objectMapper;
@@ -72,7 +70,6 @@ public class ResponseUtil {
     public void writeJson(ServletResponse response, Object obj) {
         response.setContentType("application/json");
         try {
-            objectMapper.setDateFormat(new SimpleDateFormat(FORMAT));
             objectMapper.writeValue(response.getOutputStream(), obj);
         } catch (IOException e) {
             e.printStackTrace();
