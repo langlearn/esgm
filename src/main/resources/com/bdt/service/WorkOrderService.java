@@ -32,4 +32,6 @@ public interface WorkOrderService {
     void invalid(Integer woId, String invalidReason);
 
     List<Map> queryCopy(Integer woId);
+
+    Page<ViewWorkOrder> queryCopyByPage(Integer userId, Byte isSignFor, Integer start, Integer limit);
 }
