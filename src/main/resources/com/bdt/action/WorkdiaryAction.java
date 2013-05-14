@@ -47,7 +47,7 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
 
     public void delete() {
         String rids = request.getParameter("rids");
-        workDiaryService.delete(rids);
+        workDiaryService.delete(rids, optid);
         responseUtil.writeSuccess(response);
     }
 

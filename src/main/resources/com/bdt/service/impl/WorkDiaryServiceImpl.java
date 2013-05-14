@@ -45,7 +45,7 @@ public class WorkDiaryServiceImpl implements WorkDiaryService {
     @Override
     public void modify(WorkDiary model, Integer optid) {
         Integer inputId = workDiaryMapper.selectByPrimaryKey(model.getWdId()).getUserId();
-        if (optid != inputId) {
+        if (!optid.equals(inputId)) {
             throw new ServiceException("不允许修改其他人的数据!");
         }
         workDiaryMapper.updateByPrimaryKeySelective(model);
@@ -61,9 +61,9 @@ public class WorkDiaryServiceImpl implements WorkDiaryService {
         criteria.andWdIdIn(ids);
         criteria.andUserIdEqualTo(optid);
 
-        int counter = workDiaryMapper.countByExample(example);
+        Integer counter = workDiaryMapper.countByExample(example);
 
-        if (ids.size() != counter) {
+        if (counter.equals(0) || !counter.equals(ids.size())) {
             throw new ServiceException("不允许删除其他人的数据!");
         }
 

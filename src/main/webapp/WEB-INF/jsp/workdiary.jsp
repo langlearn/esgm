@@ -55,8 +55,12 @@
 
             $('#add-form').form({
                 success: function (data) {
-                    $('#add-win').window('close');
-                    $('#grid-center').datagrid('reload');
+                    console.log(data);
+                    $.messager.alert('系统提示', '添加成功', '', function () {
+                        $('#add-win').window('close');
+                        $('#grid-center').datagrid('reload');
+                    });
+
                 }
             });
 
@@ -86,6 +90,7 @@
             });
             $('#modify-form').form({
                 success: function (data) {
+                    console.log(data);
                     $('#modify-win').window('close');
                     $('#grid-center').datagrid('reload');
                 }
