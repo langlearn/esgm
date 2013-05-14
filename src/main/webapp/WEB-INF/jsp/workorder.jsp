@@ -50,6 +50,7 @@
             $('#btn-add').bind('click', function(){
                 $('#add_ff').form('reset');
                 $('#add_win').window('open');
+                add_editor.setContent("");
             });
 
             $('#add_win_cancle').click(function(){
