@@ -55,15 +55,26 @@
 
             $('#add-form').form({
                 success: function (data) {
-                    $('#add-win').window('close');
-                    $('#grid-center').datagrid('reload');
+                    console.log(data);
+                    $.messager.alert('系统提示', '添加成功', '', function () {
+                        $('#add-win').window('close');
+                        $('#grid-center').datagrid('reload');
+                    });
+
                 }
             });
 
             //修改
             $('#btn-modify').bind('click', function () {
                 var res = $('#grid-center').datagrid('getSelections');
+
                 if (res.length == 1) {
+
+                    if (res[0].userId != ${optid}) {
+                        $.messager.alert('系统提示', '不允许修改其他人的数据!');
+                        return false;
+                    }
+
                     $('#modify-form').form('load', res[0]);
                     $('#modify-win').window('open');
                 } else {
@@ -79,6 +90,7 @@
             });
             $('#modify-form').form({
                 success: function (data) {
+                    console.log(data);
                     $('#modify-win').window('close');
                     $('#grid-center').datagrid('reload');
                 }
@@ -88,6 +100,11 @@
             $('#btn-delete').click(function () {
                 var res = $('#grid-center').datagrid('getSelections');
                 if (res.length > 0) {
+                    if (res[0].userId != ${optid}) {
+                        $.messager.alert('系统提示', '不允许删除其他人的数据!');
+                        return false;
+                    }
+
                     $.messager.confirm('删除', '你确定要删除这些记录吗?', function (r) {
                         if (r) {
 
@@ -153,7 +170,7 @@
            fit:true,url:'workdiary!queryDetail.do',
            fitColumns:true,
            pagination:true,
-           <%--singleSelect:true,--%>
+           singleSelect:true,
            toolbar:'#tb-center',
            title:'日志详情'">
         <thead>
@@ -185,14 +202,12 @@
             <tr>
                 <td>工单:</td>
                 <td>
-                    <input class="easyui-combobox"
-                           name="workOrderId"
-                           data-options="
-                        url:'workdiary!workOrder.do',
-                        valueField:'woId',
-                        textField:'workOrderTitle',
-                        panelHeight:'auto'
-                    ">
+                    <input class="easyui-combobox" name="workOrderId" data-options='
+                        valueField:"woId",
+                        textField:"workOrderTitle",
+                        data:${workOrders},
+                        panelHeight:"auto"
+                    '>
                 </td>
                 <td>工作类型:</td>
                 <td>
@@ -237,18 +252,17 @@
             <tr>
                 <td>工单:</td>
                 <td>
-                    <input class="easyui-combobox"
-                           name="workOrderId"
-                           data-options="
-                        url:'workdiary!workOrder.do',
-                        valueField:'woId',
-                        textField:'workOrderTitle',
-                        panelHeight:'auto',
-                    ">
+                    <input class="easyui-combobox" name="workOrderId" readonly="readonly" data-options='
+                        valueField:"woId",
+                        textField:"workOrderTitle",
+                        data:${workOrders},
+                        panelHeight:"auto"
+                    '>
                 </td>
                 <td>工作类型:</td>
                 <td>
-                    <input name="workTypeCode" class="easyui-combobox" required="true" data-options='
+                    <input name="workTypeCode" class="easyui-combobox" required="true" readonly="readonly"
+                           data-options='
                         valueField: "dictionaryCode",
                         textField: "dictionaryName",
                         data:${dataDictionaries}

@@ -23,6 +23,8 @@ public interface WorkOrderService {
 
     Page<ViewWorkOrder> queryByPage(ViewWorkOrder model, Integer start, Integer limit);
 
+    List<ViewWorkOrder> queryByList(ViewWorkOrder model);
+
     void confirm(Integer woId);
 
     void check(Integer woId);

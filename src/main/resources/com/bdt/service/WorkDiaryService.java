@@ -15,9 +15,9 @@ import com.bdt.common.bean.Page;
 public interface WorkDiaryService {
     void add(WorkDiary model);
 
-    void modify(WorkDiary model);
+    void modify(WorkDiary model, Integer optid);
 
-    void delete(String rids);
+    void delete(String rids, Integer optid);
 
     Page<WorkDiary> queryByPage(WorkDiary model, Integer start, Integer limit);
 
