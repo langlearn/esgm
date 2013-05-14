@@ -9,6 +9,7 @@ import com.bdt.mapper.WorkOrderCopyMapper;
 import com.bdt.mapper.WorkOrderMapper;
 import com.bdt.service.WorkOrderService;
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.guice.transactional.Transactional;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -55,6 +56,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     }
 
 
+    //设置抄送人
     private void copy(Integer woId, String userids){
         final Date COPY_TIME = new Date();
         List<Integer> ids= MyStrUtil.stringToListInteger(userids);
@@ -63,6 +65,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
             workOrderCopy.setWorkOrderId(woId);
             workOrderCopy.setCopyTime(COPY_TIME);
             workOrderCopy.setCopyUserId(userid);
+            workOrderCopy.setIsSignFor(new Byte("0"));
             workOrderCopyMapper.insertSelective(workOrderCopy);
         }
     }
@@ -98,6 +101,14 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return page;
     }
 
+    /**
+     * 需签收工单分页查询
+     * @param userId
+     * @param isSignFor
+     * @param start
+     * @param limit
+     * @return
+     */
     @Override
     public Page<ViewWorkOrder> queryCopyByPage(Integer userId, Byte isSignFor, Integer start, Integer limit){
         Page<ViewWorkOrder> page=new Page<ViewWorkOrder>(start,limit);
@@ -108,6 +119,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         return page;
     }
 
+    /**
+     * 确认
+     * @param woId
+     */
     @Override
     public void confirm(Integer woId) {
         WorkOrder workOrder=new WorkOrder();
@@ -117,6 +132,10 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         workOrderMapper.updateByPrimaryKeySelective(workOrder);
     }
 
+    /**
+     *验收
+     * @param woId
+     */
     @Override
     public void check(Integer woId) {
         WorkOrder workOrder=new WorkOrder();
@@ -126,6 +145,11 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         workOrderMapper.updateByPrimaryKeySelective(workOrder);
     }
 
+    /**
+     * 作废
+     * @param woId
+     * @param invalidReason
+     */
     @Override
     public void invalid(Integer woId, String invalidReason) {
         WorkOrder workOrder=new WorkOrder();
@@ -137,7 +161,13 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     }
 
 
+    /**
+     * 受理
+     * @param woId
+     * @param userids
+     */
     @Override
+    @Transactional
     public void accept(Integer woId, String userids) {
         WorkOrder workOrder=new WorkOrder();
         workOrder.setWoId(woId);
@@ -151,6 +181,28 @@ public class WorkOrderServiceImpl implements WorkOrderService {
         copy(woId,userids);
     }
 
+    /**
+     * 签收
+     * @param woId
+     * @param userId
+     */
+    @Override
+    public void sign(Integer woId,Integer userId){
+        WorkOrderCopyExample example=new WorkOrderCopyExample();
+        WorkOrderCopyExample.Criteria criteria=example.createCriteria();
+        criteria.andWorkOrderIdEqualTo(woId);
+        criteria.andCopyUserIdEqualTo(userId);
+        WorkOrderCopy workOrderCopy=new WorkOrderCopy();
+        workOrderCopy.setIsSignFor(new Byte("1"));
+        workOrderCopy.setSignForTime(new Date());
+        workOrderCopyMapper.updateByExampleSelective(workOrderCopy,example);
+    }
+
+    /**
+     * 获取抄送人
+     * @param woId
+     * @return
+     */
     @Override
     public List<Map> queryCopy(Integer woId){
         return addedMapper.selectWorkOrderCopy(woId);

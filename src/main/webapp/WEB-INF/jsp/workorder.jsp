@@ -58,6 +58,24 @@
             });
 
             $('#add_ff').form({
+                onSubmit: function(param){
+                    var sponsorUserId=$('#add_ff :input[name="sponsorUserId"]').val();
+                    if(sponsorUserId==""){
+                        alert("发起人不能为空!");
+                        return false;
+                    }
+                    var acceptUserId=$('#add_ff :input[name="acceptUserId"]').val();
+                    if(acceptUserId==""){
+                        alert("受理人不能为空!");
+                        return false;
+                    }
+                    var projectId=$('#add_ff :input[name="projectId"]').val();
+                    if(projectId==""){
+                        alert("项目不能为空!");
+                        return false;
+                    }
+                    return true;
+                },
                 success:function(data){
                     $('#add_win').window('close');
                     $('#grid').datagrid('reload');
@@ -118,6 +136,24 @@
                     $('#check_ff').form('load',res[0]);
                     $('#check_workOrderContent').html(res[0].workOrderContent);
                     $('#check_win').window('open');
+                }else{
+                    $.messager.alert('系统提示','请选中一条!');
+                }
+            });
+
+            //签收
+            $('#sign_ff').form({
+                success:function(data){
+                    $('#sign_win').window('close');
+                    $('#grid').datagrid('reload');
+                }
+            })
+            $('#btn-sign').click(function(){
+                var res=$('#grid').datagrid('getSelections');
+                if(res.length==1){
+                    $('#sign_ff').form('load',res[0]);
+                    $('#sign_workOrderContent').html(res[0].workOrderContent);
+                    $('#sign_win').window('open');
                 }else{
                     $.messager.alert('系统提示','请选中一条!');
                 }
@@ -338,6 +374,7 @@
             <c:if test="${sessionScope.loginUser.isAbleWorkOrderAccept==1}">
             <a class="easyui-linkbutton" id="btn-accept" plain="true">受理</a>
             </c:if>
+            <a class="easyui-linkbutton" id="btn-sign" plain="true">签收</a>
         </div>
     </div>
 </div>
@@ -360,15 +397,15 @@
             <tr>
                 <td>发起人:</td>
                 <td>
-                    <select name="sponsorUserId" style="width: 150px;">
-                        <option>请选择</option>
+                    <select name="sponsorUserId" class="easyui-combobox" style="width: 150px;">
+                        <option value="">请选择</option>
                         <c:forEach var="item" items="${sponsors}">
                             <option value="${item.userId}">${item.truename}</option>
                         </c:forEach>
                     </select>
                     受理人:
-                    <select name="acceptUserId" style="width: 150px;">
-                        <option>请选择</option>
+                    <select name="acceptUserId" class="easyui-combobox" style="width: 150px;">
+                        <option value="">请选择</option>
                         <c:forEach var="item" items="${accepts}">
                             <option value="${item.userId}">${item.truename}</option>
                         </c:forEach>
@@ -630,7 +667,7 @@
             </table>
         </div>
         <div style="text-align: center;">
-            <button type="submit">确人</button>
+            <button type="submit">受理</button>
         </div>
     </form>
 </div>
@@ -674,7 +711,7 @@
                         <input name="acceptUser" type="text" style="border: 0px;"/>
                     </td>
                 </tr>
-                <%--<tr>
+                <tr>
                     <td>确认时间:</td>
                     <td>
                     <input type="text" name="confirmTime" style="border: 0px;"/>
@@ -685,7 +722,7 @@
                     <td>
                         <input type="text" name="acceptTime" style="border: 0px;"/>
                     </td>
-                </tr>--%>
+                </tr>
                 <tr>
                     <td>工单内容:</td>
                     <td>
@@ -750,6 +787,64 @@
         </div>
         <div style="text-align: center;">
             <button type="submit">作废</button>
+        </div>
+    </form>
+</div>
+<div id="sign_win" class="easyui-window" data-options="closed:true" title="签收工单" style="width: 550px;height: 500px;">
+    <form id="sign_ff" action="workorder!sign.do" method="post" style="padding:5px;width: 500px;height: 400px;">
+        <div style="height: 400px;">
+            <table>
+                <tr>
+                    <td>工单标题:</td>
+                    <td>
+                        <input type="hidden" name="woId">
+                        <input name="workOrderTitle" type="text" style="border: 0px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>项目:</td>
+                    <td>
+                        <input type="text" name="projectName" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>填报人:</td>
+                    <td>
+                        <input name="reportUser" type="text" style="border: 0px;"/>
+                        填报时间:
+                        <input name="reportTime" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>发起人:</td>
+                    <td>
+                        <input name="sponsorUser" type="text" style="border: 0px;"/>
+                        受理人:
+                        <input name="acceptUser" type="text" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>确认时间:</td>
+                    <td>
+                        <input type="text" name="confirmTime" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>受理时间:</td>
+                    <td>
+                        <input type="text" name="acceptTime" style="border: 0px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>工单内容:</td>
+                    <td>
+                        <div id="sign_workOrderContent"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit">签收</button>
         </div>
     </form>
 </div>

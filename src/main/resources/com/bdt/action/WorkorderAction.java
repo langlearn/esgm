@@ -70,8 +70,14 @@ public class WorkorderAction extends MyActionSupport<WorkOrder> {
         service.accept(model.getWoId(),userids);
         responseUtil.writeSuccess(response);
     }
+
     public void check(){
         service.check(model.getWoId());
+        responseUtil.writeSuccess(response);
+    }
+
+    public void sign(){
+        service.sign(model.getWoId(),optid);
         responseUtil.writeSuccess(response);
     }
 
