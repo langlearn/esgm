@@ -40,9 +40,9 @@
             $('#btn-add').bind('click', function () {
                 var re = $('#grid-west').datagrid('getSelected');
                 if (null == re) {
-                    return;
+                    return false;
                 }
-                $('#add-form').form('reset');
+                $('#add-form').form('clear');
                 $('#add-win').window('open');
             });
 
@@ -153,7 +153,7 @@
            fit:true,url:'workdiary!queryDetail.do',
            fitColumns:true,
            pagination:true,
-           singleSelect:true,
+           <%--singleSelect:true,--%>
            toolbar:'#tb-center',
            title:'日志详情'">
         <thead>

@@ -6,8 +6,11 @@ import com.bdt.common.util.MyStrUtil;
 import com.bdt.mapper.ViewWorkDiaryDetailMapper;
 import com.bdt.mapper.ViewWorkDiaryMapper;
 import com.bdt.mapper.WorkDiaryMapper;
+import com.bdt.service.ServiceException;
 import com.bdt.service.WorkDiaryService;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -27,7 +30,15 @@ public class WorkDiaryServiceImpl implements WorkDiaryService {
 
     @Override
     public void add(WorkDiary model) {
-        workDiaryMapper.insert(model);
+        DateTime before7Day = new DateTime().millisOfDay().withMinimumValue().minusDays(7);
+        DateTime inputBefore7Day = new DateTime(model.getWorkTime()).millisOfDay().withMinimumValue().minusDays(7);
+        int bd = Days.daysBetween(inputBefore7Day, before7Day).getDays();
+        //7只允许填入7天(含)内的数据
+        if (bd >= 0 && bd <= 7) {
+            workDiaryMapper.insert(model);
+        } else {
+            throw new ServiceException("只允许填写7天内的数据!");
+        }
     }
 
 
