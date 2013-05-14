@@ -63,9 +63,15 @@
             //修改
             $('#btn-modify').bind('click', function () {
                 var res = $('#grid-center').datagrid('getSelections');
+
                 if (res.length == 1) {
-                    var re = res[0];
-                    $('#modify-form').form('load', re);
+
+                    if (res[0].userId != ${optid}) {
+                        $.messager.alert('系统提示', '不允许修改其他人的数据!');
+                        return false;
+                    }
+
+                    $('#modify-form').form('load', res[0]);
                     $('#modify-win').window('open');
                 } else {
                     $.messager.alert('系统提示', '请选中一条!');
@@ -89,6 +95,11 @@
             $('#btn-delete').click(function () {
                 var res = $('#grid-center').datagrid('getSelections');
                 if (res.length > 0) {
+                    if (res[0].userId != ${optid}) {
+                        $.messager.alert('系统提示', '不允许删除其他人的数据!');
+                        return false;
+                    }
+
                     $.messager.confirm('删除', '你确定要删除这些记录吗?', function (r) {
                         if (r) {
 

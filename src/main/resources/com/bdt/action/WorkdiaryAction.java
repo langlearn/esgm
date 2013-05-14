@@ -41,7 +41,7 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
     }
 
     public void modify() {
-        workDiaryService.modify(model);
+        workDiaryService.modify(model, optid);
         responseUtil.writeSuccess(response);
     }
 
@@ -58,22 +58,18 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
     }
 
     public void queryDetail() {
+        Page<ViewWorkDiaryDetail> result = null;
         if (null == model.getUserId() || null == model.getWorkTime()) {
-            return;
+        } else {
+            result = workDiaryService.queryDetailViewByPage(model, start, limit);
         }
-        Page<ViewWorkDiaryDetail> result = workDiaryService.queryDetailViewByPage(model, start, limit);
-        responseUtil.writeJson(response, result);
-    }
-
-    public void workOrder() {
-
-        List<ViewWorkOrder> result = null;
         responseUtil.writeJson(response, result);
     }
 
     public String execute() throws JsonProcessingException {
         List<DataDictionary> dataDictionaries = dataDictionaryService.queryByParentCode("002");
         request.setAttribute("dataDictionaries", objectMapper.writeValueAsString(dataDictionaries));
+        request.setAttribute("optid", objectMapper.writeValueAsString(optid));
 
         ViewWorkOrder order = new ViewWorkOrder();
         order.setAcceptStatus((byte) 1);

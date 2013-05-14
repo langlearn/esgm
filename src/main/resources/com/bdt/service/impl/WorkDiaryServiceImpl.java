@@ -43,18 +43,35 @@ public class WorkDiaryServiceImpl implements WorkDiaryService {
 
 
     @Override
-    public void modify(WorkDiary model) {
+    public void modify(WorkDiary model, Integer optid) {
+        Integer inputId = workDiaryMapper.selectByPrimaryKey(model.getWdId()).getUserId();
+        if (optid != inputId) {
+            throw new ServiceException("不允许修改其他人的数据!");
+        }
         workDiaryMapper.updateByPrimaryKeySelective(model);
     }
 
 
     @Override
-    public void delete(String rids) {
+    public void delete(String rids, Integer optid) {
         List<Integer> ids = MyStrUtil.stringToListInteger(rids);
+
         WorkDiaryExample example = new WorkDiaryExample();
         WorkDiaryExample.Criteria criteria = example.createCriteria();
         criteria.andWdIdIn(ids);
-        workDiaryMapper.deleteByExample(example);
+        criteria.andUserIdEqualTo(optid);
+
+        int counter = workDiaryMapper.countByExample(example);
+
+        if (ids.size() != counter) {
+            throw new ServiceException("不允许删除其他人的数据!");
+        }
+
+        WorkDiaryExample example1 = new WorkDiaryExample();
+        WorkDiaryExample.Criteria criteria1 = example1.createCriteria();
+        criteria1.andWdIdIn(ids);
+
+        workDiaryMapper.deleteByExample(example1);
     }
 
 
