@@ -36,4 +36,6 @@ public interface WorkOrderService {
     List<Map> queryCopy(Integer woId);
 
     Page<ViewWorkOrder> queryCopyByPage(Integer userId, Byte isSignFor, Integer start, Integer limit);
+
+    void sign(Integer woId, Integer userId);
 }

@@ -9,13 +9,11 @@
 <html>
 <head>
     <title></title>
-    <%--<link rel="stylesheet" type="text/css" href="jquery-easyui/1.3.3/themes/default/easyui.css">--%>
-    <%--<link rel="stylesheet" type="text/css" href="jquery-easyui/1.3.3/themes/icon.css">--%>
-    <%--<link rel="stylesheet" type="text/css" href="ztree/css/zTreeStyle.css">--%>
-    <%--<script type="text/javascript" src="jquery-easyui/1.3.3/jquery.min.js"></script>--%>
-    <%--<script type="text/javascript" src="jquery-easyui/1.3.3/jquery.easyui.min.js"></script>--%>
-    <%--<script type="text/javascript" src="jquery-easyui/1.3.3/easyui-lang-zh_CN.js"></script>--%>
-    <%--<script type="text/javascript" src="ztree/js/jquery.ztree.core-3.5.min.js"></script>--%>
+    <style type="text/css">
+        .pan_body{
+            overflow-y: hidden;
+        }
+    </style>
     <script type="text/javascript">
         $(function () {
             var setting = {
@@ -32,7 +30,8 @@
                             $('#tt').tabs('add', {
                                 title: treeNode.name,
                                 content: '<iframe src="' + treeNode.src + '" style="height: 100%;width: 100%;border: 0px;"></iframe>',
-                                closable: true
+                                closable: true,
+                                bodyCls:'pan_body'
                             });
                         }
                     }
@@ -82,13 +81,6 @@
 <div region="center" border="false">
     <div id="tt" class="easyui-tabs" fit="true" border="false" plain="true">
         <div title="Welcome" fit="true" style="padding: 10px;">
-            <div id="p" class="easyui-panel" title="工单签收"
-                 style="width:500px;height:150px;padding:10px;background:#fafafa;"
-                 data-options="iconCls:'icon-save',closable:true,
-                collapsible:true,minimizable:true,maximizable:true">
-                <p>panel content.</p>
-                <p>panel content.</p>
-            </div>
         </div>
     </div>
 </div>

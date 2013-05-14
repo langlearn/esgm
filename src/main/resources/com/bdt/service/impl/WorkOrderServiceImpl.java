@@ -9,6 +9,7 @@ import com.bdt.mapper.WorkOrderCopyMapper;
 import com.bdt.mapper.WorkOrderMapper;
 import com.bdt.service.WorkOrderService;
 import org.apache.commons.lang3.StringUtils;
+import org.mybatis.guice.transactional.Transactional;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     private AddedMapper addedMapper;
 
     @Override
-    public void add(WorkOrder model) {
+    public void add(WorkOrder model){
         model.setAcceptStatus(new Byte("0"));
         model.setConfirmStatus(new Byte("0"));
         model.setCheckReceiveStatus(new Byte("0"));
@@ -41,122 +42,117 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     }
 
     @Override
-    public void modify(WorkOrder model) {
+    public void modify(WorkOrder model){
         workOrderMapper.updateByPrimaryKeySelective(model);
     }
 
     @Override
-    public void delete(String rids) {
-        List<Integer> ids = MyStrUtil.stringToListInteger(rids);
-        WorkOrderExample example = new WorkOrderExample();
-        WorkOrderExample.Criteria criteria = example.createCriteria();
+    public void delete(String rids){
+        List<Integer> ids= MyStrUtil.stringToListInteger(rids);
+        WorkOrderExample example=new WorkOrderExample();
+        WorkOrderExample.Criteria criteria=example.createCriteria();
         criteria.andWoIdIn(ids);
         workOrderMapper.deleteByExample(example);
     }
 
 
-    private void copy(Integer woId, String userids) {
+    //设置抄送人
+    private void copy(Integer woId, String userids){
         final Date COPY_TIME = new Date();
-        List<Integer> ids = MyStrUtil.stringToListInteger(userids);
-        for (Integer userid : ids) {
-            WorkOrderCopy workOrderCopy = new WorkOrderCopy();
+        List<Integer> ids= MyStrUtil.stringToListInteger(userids);
+        for (Integer userid:ids){
+            WorkOrderCopy workOrderCopy=new WorkOrderCopy();
             workOrderCopy.setWorkOrderId(woId);
             workOrderCopy.setCopyTime(COPY_TIME);
             workOrderCopy.setCopyUserId(userid);
+            workOrderCopy.setIsSignFor(new Byte("0"));
             workOrderCopyMapper.insertSelective(workOrderCopy);
         }
     }
 
     @Override
-    public Page<ViewWorkOrder> queryByPage(ViewWorkOrder model, Integer start, Integer limit) {
-        Page<ViewWorkOrder> page = new Page<ViewWorkOrder>(start, limit);
-        ViewWorkOrderExample example = new ViewWorkOrderExample();
-        ViewWorkOrderExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(model.getWorkOrderTitle()))
-            criteria.andWorkOrderTitleLike("%" + model.getWorkOrderTitle() + "%");
-        if (StringUtils.isNotBlank(model.getProjectName()))
-            criteria.andProjectNameLike("%" + model.getProjectName() + "%");
-        if (model.getAcceptStatus() != null)
+    public Page<ViewWorkOrder> queryByPage(ViewWorkOrder model, Integer start, Integer limit){
+        Page<ViewWorkOrder> page=new Page<ViewWorkOrder>(start,limit);
+        ViewWorkOrderExample example=new ViewWorkOrderExample();
+        ViewWorkOrderExample.Criteria criteria=example.createCriteria();
+        if(StringUtils.isNotBlank(model.getWorkOrderTitle()))
+            criteria.andWorkOrderTitleLike("%"+model.getWorkOrderTitle()+"%");
+        if(StringUtils.isNotBlank(model.getProjectName()))
+            criteria.andProjectNameLike("%"+model.getProjectName()+"%");
+        if(model.getAcceptStatus()!=null)
             criteria.andAcceptStatusEqualTo(model.getAcceptStatus());
-        if (model.getCheckReceiveStatus() != null)
+        if(model.getCheckReceiveStatus()!=null)
             criteria.andCheckReceiveStatusEqualTo(model.getCheckReceiveStatus());
-        if (model.getConfirmStatus() != null)
+        if(model.getConfirmStatus()!=null)
             criteria.andConfirmStatusEqualTo(model.getConfirmStatus());
-        if (model.getAcceptUserId() != null) {
+        if(model.getAcceptUserId()!=null){
             criteria.andAcceptUserIdEqualTo(model.getAcceptUserId());
         }
-        if (model.getReportUserId() != null) {
+        if(model.getReportUserId()!=null){
             criteria.andReportUserIdEqualTo(model.getReportUserId());
         }
-        if (model.getSponsorUserId() != null) {
+        if(model.getSponsorUserId()!=null){
             criteria.andSponsorUserIdEqualTo(model.getSponsorUserId());
         }
-        int count = viewWorkOrderMapper.countByExample(example);
-        List<ViewWorkOrder> viewWorkOrders = viewWorkOrderMapper.selectByExampleWithBLOBs(example, page.createRowBounds());
+        int count=viewWorkOrderMapper.countByExample(example);
+        List<ViewWorkOrder> viewWorkOrders=viewWorkOrderMapper.selectByExampleWithBLOBs(example,page.createRowBounds());
         page.setTotal(count);
         page.setRoot(viewWorkOrders);
         return page;
     }
 
+    /**
+     * 需签收工单分页查询
+     * @param userId
+     * @param isSignFor
+     * @param start
+     * @param limit
+     * @return
+     */
     @Override
-    public List<ViewWorkOrder> queryByList(ViewWorkOrder model) {
-        ViewWorkOrderExample example = new ViewWorkOrderExample();
-        ViewWorkOrderExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(model.getWorkOrderTitle()))
-            criteria.andWorkOrderTitleLike("%" + model.getWorkOrderTitle() + "%");
-        if (StringUtils.isNotBlank(model.getProjectName()))
-            criteria.andProjectNameLike("%" + model.getProjectName() + "%");
-        if (model.getAcceptStatus() != null)
-            criteria.andAcceptStatusEqualTo(model.getAcceptStatus());
-        if (model.getCheckReceiveStatus() != null)
-            criteria.andCheckReceiveStatusEqualTo(model.getCheckReceiveStatus());
-        if (model.getConfirmStatus() != null)
-            criteria.andConfirmStatusEqualTo(model.getConfirmStatus());
-        if (model.getAcceptUserId() != null) {
-            criteria.andAcceptUserIdEqualTo(model.getAcceptUserId());
-        }
-        if (model.getReportUserId() != null) {
-            criteria.andReportUserIdEqualTo(model.getReportUserId());
-        }
-        if (model.getSponsorUserId() != null) {
-            criteria.andSponsorUserIdEqualTo(model.getSponsorUserId());
-        }
-        List<ViewWorkOrder> viewWorkOrders = viewWorkOrderMapper.selectByExampleWithBLOBs(example);
-
-        return viewWorkOrders;
-    }
-
-    @Override
-    public Page<ViewWorkOrder> queryCopyByPage(Integer userId, Byte isSignFor, Integer start, Integer limit) {
-        Page<ViewWorkOrder> page = new Page<ViewWorkOrder>(start, limit);
-        int count = addedMapper.countWorkOrderForCopy(userId, isSignFor);
-        List<ViewWorkOrder> viewWorkOrders = addedMapper.selectWorkOrderForCopy(userId, isSignFor, page.createRowBounds());
+    public Page<ViewWorkOrder> queryCopyByPage(Integer userId, Byte isSignFor, Integer start, Integer limit){
+        Page<ViewWorkOrder> page=new Page<ViewWorkOrder>(start,limit);
+        int count=addedMapper.countWorkOrderForCopy(userId,isSignFor);
+        List<ViewWorkOrder> viewWorkOrders=addedMapper.selectWorkOrderForCopy(userId, isSignFor, page.createRowBounds());
         page.setTotal(count);
         page.setRoot(viewWorkOrders);
         return page;
     }
 
+    /**
+     * 确认
+     * @param woId
+     */
     @Override
     public void confirm(Integer woId) {
-        WorkOrder workOrder = new WorkOrder();
+        WorkOrder workOrder=new WorkOrder();
         workOrder.setWoId(woId);
         workOrder.setConfirmStatus(new Byte("1"));
         workOrder.setConfirmTime(new Date());
         workOrderMapper.updateByPrimaryKeySelective(workOrder);
     }
 
+    /**
+     *验收
+     * @param woId
+     */
     @Override
     public void check(Integer woId) {
-        WorkOrder workOrder = new WorkOrder();
+        WorkOrder workOrder=new WorkOrder();
         workOrder.setWoId(woId);
         workOrder.setCheckReceiveStatus(new Byte("1"));
         workOrder.setCheckReceiveTime(new Date());
         workOrderMapper.updateByPrimaryKeySelective(workOrder);
     }
 
+    /**
+     * 作废
+     * @param woId
+     * @param invalidReason
+     */
     @Override
     public void invalid(Integer woId, String invalidReason) {
-        WorkOrder workOrder = new WorkOrder();
+        WorkOrder workOrder=new WorkOrder();
         workOrder.setWoId(woId);
         workOrder.setCheckReceiveStatus(new Byte("2"));
         workOrder.setCheckReceiveTime(new Date());
@@ -165,22 +161,50 @@ public class WorkOrderServiceImpl implements WorkOrderService {
     }
 
 
+    /**
+     * 受理
+     * @param woId
+     * @param userids
+     */
     @Override
+    @Transactional
     public void accept(Integer woId, String userids) {
-        WorkOrder workOrder = new WorkOrder();
+        WorkOrder workOrder=new WorkOrder();
         workOrder.setWoId(woId);
         workOrder.setAcceptStatus(new Byte("1"));
         workOrder.setAcceptTime(new Date());
         workOrderMapper.updateByPrimaryKeySelective(workOrder);
-        WorkOrderCopyExample example = new WorkOrderCopyExample();
-        WorkOrderCopyExample.Criteria criteria = example.createCriteria();
+        WorkOrderCopyExample example=new WorkOrderCopyExample();
+        WorkOrderCopyExample.Criteria criteria=example.createCriteria();
         criteria.andWorkOrderIdEqualTo(woId);
         workOrderCopyMapper.deleteByExample(example);
-        copy(woId, userids);
+        copy(woId,userids);
     }
 
+    /**
+     * 签收
+     * @param woId
+     * @param userId
+     */
     @Override
-    public List<Map> queryCopy(Integer woId) {
+    public void sign(Integer woId,Integer userId){
+        WorkOrderCopyExample example=new WorkOrderCopyExample();
+        WorkOrderCopyExample.Criteria criteria=example.createCriteria();
+        criteria.andWorkOrderIdEqualTo(woId);
+        criteria.andCopyUserIdEqualTo(userId);
+        WorkOrderCopy workOrderCopy=new WorkOrderCopy();
+        workOrderCopy.setIsSignFor(new Byte("1"));
+        workOrderCopy.setSignForTime(new Date());
+        workOrderCopyMapper.updateByExampleSelective(workOrderCopy,example);
+    }
+
+    /**
+     * 获取抄送人
+     * @param woId
+     * @return
+     */
+    @Override
+    public List<Map> queryCopy(Integer woId){
         return addedMapper.selectWorkOrderCopy(woId);
     }
 }
