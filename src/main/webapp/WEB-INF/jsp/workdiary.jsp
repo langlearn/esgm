@@ -64,7 +64,8 @@
             $('#btn-modify').bind('click', function () {
                 var res = $('#grid-center').datagrid('getSelections');
                 if (res.length == 1) {
-                    $('#modify-form').form('load', res[0]);
+                    var re = res[0];
+                    $('#modify-form').form('load', re);
                     $('#modify-win').window('open');
                 } else {
                     $.messager.alert('系统提示', '请选中一条!');
@@ -153,7 +154,7 @@
            fit:true,url:'workdiary!queryDetail.do',
            fitColumns:true,
            pagination:true,
-           <%--singleSelect:true,--%>
+           singleSelect:true,
            toolbar:'#tb-center',
            title:'日志详情'">
         <thead>
@@ -185,14 +186,12 @@
             <tr>
                 <td>工单:</td>
                 <td>
-                    <input class="easyui-combobox"
-                           name="workOrderId"
-                           data-options="
-                        url:'workdiary!workOrder.do',
-                        valueField:'woId',
-                        textField:'workOrderTitle',
-                        panelHeight:'auto'
-                    ">
+                    <input class="easyui-combobox" name="workOrderId" data-options='
+                        valueField:"woId",
+                        textField:"workOrderTitle",
+                        data:${workOrders},
+                        panelHeight:"auto"
+                    '>
                 </td>
                 <td>工作类型:</td>
                 <td>
@@ -237,18 +236,17 @@
             <tr>
                 <td>工单:</td>
                 <td>
-                    <input class="easyui-combobox"
-                           name="workOrderId"
-                           data-options="
-                        url:'workdiary!workOrder.do',
-                        valueField:'woId',
-                        textField:'workOrderTitle',
-                        panelHeight:'auto',
-                    ">
+                    <input class="easyui-combobox" name="workOrderId" readonly="readonly" data-options='
+                        valueField:"woId",
+                        textField:"workOrderTitle",
+                        data:${workOrders},
+                        panelHeight:"auto"
+                    '>
                 </td>
                 <td>工作类型:</td>
                 <td>
-                    <input name="workTypeCode" class="easyui-combobox" required="true" data-options='
+                    <input name="workTypeCode" class="easyui-combobox" required="true" readonly="readonly"
+                           data-options='
                         valueField: "dictionaryCode",
                         textField: "dictionaryName",
                         data:${dataDictionaries}

@@ -66,10 +66,7 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
     }
 
     public void workOrder() {
-        ViewWorkOrder order = new ViewWorkOrder();
-        order.setAcceptStatus((byte) 1);
-        order.setConfirmStatus((byte) 0);
-        order.setAcceptUserId(optid);
+
         List<ViewWorkOrder> result = null;
         responseUtil.writeJson(response, result);
     }
@@ -77,6 +74,14 @@ public class WorkdiaryAction extends MyActionSupport<WorkDiary> {
     public String execute() throws JsonProcessingException {
         List<DataDictionary> dataDictionaries = dataDictionaryService.queryByParentCode("002");
         request.setAttribute("dataDictionaries", objectMapper.writeValueAsString(dataDictionaries));
+
+        ViewWorkOrder order = new ViewWorkOrder();
+        order.setAcceptStatus((byte) 1);
+        order.setConfirmStatus((byte) 0);
+        order.setAcceptUserId(optid);
+        List<ViewWorkOrder> workOrders = workOrderService.queryByList(order);
+        request.setAttribute("workOrders", objectMapper.writeValueAsString(workOrders));
+
         return SUCCESS;
     }
 }
